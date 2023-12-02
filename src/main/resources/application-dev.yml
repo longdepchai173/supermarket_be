@@ -1,0 +1,12 @@
+server:
+  port : 8080
+spring:
+  datasource:
+    url: jdbc://postgres://dpg-cl3lg5quuipc738emhgg-a.singapore-postgres.render.com:5432/supermarket_lxyg
+    username: supermarket_lxyg_user
+    password: rsxELQlfoECopthX0VAm8cHArBPvO3O9
+    schema: classpath:/schema.sql
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
