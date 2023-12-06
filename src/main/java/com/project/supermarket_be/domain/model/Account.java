@@ -1,12 +1,17 @@
 package com.project.supermarket_be.domain.model;
 
+import com.project.supermarket_be.api.dto.request.CreateStaffRequest;
+import com.project.supermarket_be.domain.enums.Role;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
 
-@Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 @Table(name = "ACCOUNT")
 public class Account {
     @Id
@@ -24,6 +29,7 @@ public class Account {
     private Date dateOfBirth;
 
     private String gender;
+
 
     private String role;
 
@@ -53,5 +59,22 @@ public class Account {
     @Column(name = "has_statistic")
     private boolean hasStatistic;
 
+
+    public static Account fromCreateStaffRequest(CreateStaffRequest request) {
+        return Account.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .gender(String.valueOf(request.isGender()))
+                .role(request.getRole())
+                .phone(request.getPhone())
+                .position(request.getPosition())
+                .hasWarehouse(request.isHasWarehouse())
+                .hasShelf(request.isHasShelf())
+                .hasSupply(request.isHasSupply())
+                .hasAudit(request.isHasAudit())
+                .hasStatistic(request.isHasStatistic())
+                .build();
+    }
 
 }

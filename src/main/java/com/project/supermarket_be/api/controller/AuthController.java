@@ -1,7 +1,9 @@
 package com.project.supermarket_be.api.controller;
 
-import com.project.supermarket_be.api.dto.RequestLogin;
-import com.project.supermarket_be.api.response.AuthResponse;
+import com.project.supermarket_be.api.dto.request.CreateStaffRequest;
+import com.project.supermarket_be.api.dto.request.RequestLogin;
+import com.project.supermarket_be.api.dto.response.AuthResponse;
+import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.domain.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +20,14 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody  RequestLogin requestLogin,
+    public ResponseEntity<AuthResponse> login(@RequestBody RequestLogin requestLogin,
                                              BindingResult bindingResult) {
         AuthResponse response = authService.authenticate((requestLogin));
         return  ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+    @PostMapping("/create-staff-account")
+    public ResponseEntity<ReturnResponse> createStaffAccount(@RequestBody CreateStaffRequest request){
+        ReturnResponse response = authService.createStaffAccount(request);
+        return ResponseEntity.status(response.getHttpStatusCode()).body(response);
     }
 }

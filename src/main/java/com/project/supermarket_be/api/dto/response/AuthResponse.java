@@ -1,4 +1,4 @@
-package com.project.supermarket_be.api.response;
+package com.project.supermarket_be.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;

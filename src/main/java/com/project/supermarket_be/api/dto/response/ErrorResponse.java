@@ -1,4 +1,4 @@
-package com.project.supermarket_be.api.response;
+package com.project.supermarket_be.api.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

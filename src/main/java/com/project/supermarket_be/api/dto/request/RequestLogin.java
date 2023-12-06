@@ -1,4 +1,4 @@
-package com.project.supermarket_be.api.dto;
+package com.project.supermarket_be.api.dto.request;
 
 import lombok.Data;
 

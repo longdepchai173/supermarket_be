@@ -1,9 +1,12 @@
 package com.project.supermarket_be.domain.service.impl;
 
-import com.project.supermarket_be.api.dto.RequestLogin;
+import com.project.supermarket_be.api.dto.request.CreateStaffRequest;
+import com.project.supermarket_be.api.dto.request.RequestLogin;
+import com.project.supermarket_be.api.dto.response.ReturnResponse;
+import com.project.supermarket_be.api.exception.customerException.CannotCreateUser;
 import com.project.supermarket_be.api.exception.customerException.PasswordErrorException;
 import com.project.supermarket_be.api.exception.customerException.UserNotFoundException;
-import com.project.supermarket_be.api.response.AuthResponse;
+import com.project.supermarket_be.api.dto.response.AuthResponse;
 import com.project.supermarket_be.domain.model.Account;
 import com.project.supermarket_be.domain.repository.AccountRepo;
 import com.project.supermarket_be.domain.service.AuthService;
@@ -19,7 +22,7 @@ public class AuthServiceImp implements AuthService {
     private final JwtService jwtService;
     @Override
     public AuthResponse authenticate(RequestLogin requestLogin) {
-        Account account = accountRepo.findByEmail(requestLogin.getEmail());
+        Account account = accountRepo.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new UserNotFoundException(requestLogin.getEmail()));
         if(account == null){
             throw new UserNotFoundException(requestLogin.getEmail());
         }
@@ -32,5 +35,20 @@ public class AuthServiceImp implements AuthService {
                     .accessToken(accessToken).build();
         }else
             throw new PasswordErrorException(requestLogin.getEmail());
+    }
+
+    @Override
+    public ReturnResponse createStaffAccount(CreateStaffRequest request) {
+        Account account = accountRepo.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UserNotFoundException(request.getEmail()));
+        if(account == null){
+            Account newStaffAccount = Account.fromCreateStaffRequest(request);
+            Account createdAccount = accountRepo.save(newStaffAccount);
+            return ReturnResponse.builder()
+                    .httpStatusCode(HttpStatus.CREATED)
+                    .data(createdAccount)
+                    .build();
+        }
+        throw new CannotCreateUser(request.getEmail());
     }
 }
