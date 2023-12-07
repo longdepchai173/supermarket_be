@@ -22,7 +22,7 @@ public class AuthServiceImp implements AuthService {
     private final JwtService jwtService;
     @Override
     public AuthResponse authenticate(RequestLogin requestLogin) {
-        Account account = accountRepo.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new UserNotFoundException(requestLogin.getEmail()));
+        Account account = accountRepo.findByEmail(requestLogin.getEmail());
         if(account == null){
             throw new UserNotFoundException(requestLogin.getEmail());
         }
@@ -37,18 +37,4 @@ public class AuthServiceImp implements AuthService {
             throw new PasswordErrorException(requestLogin.getEmail());
     }
 
-    @Override
-    public ReturnResponse createStaffAccount(CreateStaffRequest request) {
-        Account account = accountRepo.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UserNotFoundException(request.getEmail()));
-        if(account == null){
-            Account newStaffAccount = Account.fromCreateStaffRequest(request);
-            Account createdAccount = accountRepo.save(newStaffAccount);
-            return ReturnResponse.builder()
-                    .statusCode(HttpStatus.CREATED)
-                    .data(createdAccount)
-                    .build();
-        }
-        throw new CannotCreateUser(request.getEmail());
-    }
 }

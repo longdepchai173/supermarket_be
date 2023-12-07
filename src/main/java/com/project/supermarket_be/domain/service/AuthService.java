@@ -7,5 +7,5 @@ import com.project.supermarket_be.api.dto.response.ReturnResponse;
 
 public interface AuthService {
     AuthResponse authenticate(RequestLogin requestLogin);
-    ReturnResponse createStaffAccount(CreateStaffRequest request);
+
 }

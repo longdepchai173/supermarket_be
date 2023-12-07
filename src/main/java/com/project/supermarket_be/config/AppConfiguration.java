@@ -12,4 +12,11 @@ public class AppConfiguration {
         registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return registrationBean;
     }
+    @Bean
+    public FilterRegistrationBean<TokenAdminValidationFilter> tokenAdminValidationFilter() {
+        FilterRegistrationBean<TokenAdminValidationFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new TokenAdminValidationFilter());
+        registrationBean.addUrlPatterns("/api/accounts/*");
+        return registrationBean;
+    }
 }

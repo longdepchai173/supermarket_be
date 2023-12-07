@@ -1,10 +1,7 @@
 package com.project.supermarket_be.api.exception;
 
 
-import com.project.supermarket_be.api.exception.customerException.CannotCreateUser;
-import com.project.supermarket_be.api.exception.customerException.PasswordErrorException;
-import com.project.supermarket_be.api.exception.customerException.UserIDNotFoundException;
-import com.project.supermarket_be.api.exception.customerException.UserNotFoundException;
+import com.project.supermarket_be.api.exception.customerException.*;
 import com.project.supermarket_be.api.dto.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -92,4 +89,16 @@ public class HandlerException {
     public ErrorResponse handlerUserIDNotFoundException(UserIDNotFoundException ex){
         return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
+    @ExceptionHandler(TokenIsEmptyException.class)
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    public ErrorResponse handleTokenIsEmpty(TokenIsEmptyException ex){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(NotHavePermissionException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleUserHaveNotPermission(NotHavePermissionException ex){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
 }

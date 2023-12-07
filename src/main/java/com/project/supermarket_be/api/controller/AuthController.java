@@ -25,9 +25,5 @@ public class AuthController {
         AuthResponse response = authService.authenticate((requestLogin));
         return  ResponseEntity.status(response.getStatusCode()).body(response);
     }
-    @PostMapping("/create-staff-account")
-    public ResponseEntity<ReturnResponse> createStaffAccount(@RequestBody CreateStaffRequest request){
-        ReturnResponse response = authService.createStaffAccount(request);
-        return ResponseEntity.status(response.getHttpStatusCode()).body(response);
-    }
+
 }

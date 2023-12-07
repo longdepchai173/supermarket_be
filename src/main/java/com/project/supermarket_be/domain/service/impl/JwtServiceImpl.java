@@ -31,7 +31,7 @@ public class JwtServiceImpl implements JwtService {
                 .setSubject(userDetails.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpirationTime))
-//                .claim("refreshTokenId", refreshTokenId)
+                .claim("role",userDetails.getRole())
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -45,6 +45,16 @@ public class JwtServiceImpl implements JwtService {
         final String username = extractUsername(token);
         return(username.equals(userDetails.getEmail())) && !isTokenExpired(token);
     }
+
+    @Override
+    public String exactRole(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(getSignInKey())
+                .parseClaimsJws(token)
+                .getBody();
+        return (String) claims.get("role");
+    }
+
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
