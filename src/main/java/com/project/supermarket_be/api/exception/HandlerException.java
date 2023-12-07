@@ -3,6 +3,7 @@ package com.project.supermarket_be.api.exception;
 
 import com.project.supermarket_be.api.exception.customerException.CannotCreateUser;
 import com.project.supermarket_be.api.exception.customerException.PasswordErrorException;
+import com.project.supermarket_be.api.exception.customerException.UserIDNotFoundException;
 import com.project.supermarket_be.api.exception.customerException.UserNotFoundException;
 import com.project.supermarket_be.api.dto.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -83,6 +84,12 @@ public class HandlerException {
     @ExceptionHandler(CannotCreateUser.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handlerCannotCreateUser(CannotCreateUser ex){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(UserIDNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handlerUserIDNotFoundException(UserIDNotFoundException ex){
         return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 }

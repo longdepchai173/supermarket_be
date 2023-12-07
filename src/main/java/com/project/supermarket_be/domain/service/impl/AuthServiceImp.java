@@ -45,7 +45,7 @@ public class AuthServiceImp implements AuthService {
             Account newStaffAccount = Account.fromCreateStaffRequest(request);
             Account createdAccount = accountRepo.save(newStaffAccount);
             return ReturnResponse.builder()
-                    .httpStatusCode(HttpStatus.CREATED)
+                    .statusCode(HttpStatus.CREATED)
                     .data(createdAccount)
                     .build();
         }

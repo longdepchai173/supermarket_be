@@ -6,6 +6,6 @@ import org.springframework.http.HttpStatusCode;
 @Data
 @Builder
 public class ReturnResponse {
-    private HttpStatusCode httpStatusCode;
+    private HttpStatusCode statusCode;
     private Object data;
 }
