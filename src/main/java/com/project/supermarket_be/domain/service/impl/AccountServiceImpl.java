@@ -99,4 +99,20 @@ public class AccountServiceImpl implements AccountService {
                 .build();
     }
 
+    @Override
+    public ReturnResponse blockAccountById(String id) {
+        long convId = Long.parseLong(id);
+        Account account = accountRepo.findById(convId).orElseThrow(() -> new UserIDNotFoundException(id));
+
+        // Assuming you have a status constant for blocked accounts, e.g., AccountStatus.BLOCKED
+        account.setStatus(0);
+
+        Account blockedAccount = accountRepo.save(account);
+
+        return ReturnResponse.builder()
+                .statusCode(HttpStatus.OK)
+                .data(blockedAccount)
+                .build();
+    }
+
 }

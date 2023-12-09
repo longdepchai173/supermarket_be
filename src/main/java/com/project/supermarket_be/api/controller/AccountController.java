@@ -35,4 +35,10 @@ public class AccountController {
         ReturnResponse response = accountService.createStaffAccount(request);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
+
+    @PostMapping("/block/{accountId}")
+    public ResponseEntity<ReturnResponse> blockStaffAccount(@PathVariable String accountId){
+        ReturnResponse response = accountService.blockAccountById(accountId);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
 }

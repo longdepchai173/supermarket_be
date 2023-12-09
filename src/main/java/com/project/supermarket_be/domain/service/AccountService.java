@@ -9,4 +9,5 @@ public interface AccountService {
     ReturnResponse getAccountDetailById(String id);
     ReturnResponse createStaffAccount(CreateStaffRequest request);
     ReturnResponse getAllAccountPaging(GetAllAccountParam param);
+    ReturnResponse blockAccountById(String id);
 }
