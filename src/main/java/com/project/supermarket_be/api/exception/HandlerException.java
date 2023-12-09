@@ -57,6 +57,11 @@ public class HandlerException {
     public ErrorResponse handlerPasswordError(PasswordErrorException ex){
         return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
+    @ExceptionHandler(EmptyException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleEmptyException(EmptyException ex){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
 //    @ExceptionHandler(AccessDeniedException.class)
 //    @ResponseStatus(HttpStatus.UNAUTHORIZED)
 //    public ErrorResponse handlerAccessDeniedException(AccessDeniedException ex){

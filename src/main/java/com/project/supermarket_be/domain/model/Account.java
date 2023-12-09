@@ -33,7 +33,7 @@ public class Account {
 
     private String role;
 
-    private String status;
+    private Integer status;
 
     @Column(name = "has_warehouse")
     private boolean hasWarehouse;
