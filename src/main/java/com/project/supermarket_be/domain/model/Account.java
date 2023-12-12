@@ -59,6 +59,9 @@ public class Account {
     @Column(name = "has_statistic")
     private boolean hasStatistic;
 
+    @Column(name = "deleted_flag")
+    private boolean deleteFlag;
+
 
     public static Account fromCreateStaffRequest(CreateStaffRequest request) {
         return Account.builder()
