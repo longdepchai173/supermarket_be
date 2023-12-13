@@ -30,7 +30,7 @@ public class TokenAdminValidationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = "";
         String uri = request.getRequestURI();
-        if(uri.contains("auth"))
+        if (uri.contains("auth"))
             filterChain.doFilter(request, response);
         else {
             token = request.getHeader("Authorization");
@@ -38,17 +38,19 @@ public class TokenAdminValidationFilter extends OncePerRequestFilter {
                 throw new UserIDNotFoundException("1");
 
             boolean isValidToken = isValidToken(token);
-            String accessToken =  token.substring(7);
+            String accessToken = token.substring(7);
             String role = jwtService.exactRole(accessToken);
 
-            if (isValidToken && role.equals("ADMIN")) {
-                // If the token is valid, proceed to the next filter in the chain
-                filterChain.doFilter(request, response);
-            } else if (!role.equals("ADMIN")) {
-                customizeForbiddenResponse(response, "You haven't permission");
+            if (isValidToken && uri.contains("accounts")) {
+                if (role.equals("ADMIN"))
+                    filterChain.doFilter(request, response);
+                else
+                    customizeForbiddenResponse(response, "You haven't permission");
+            } else if (isValidToken) {
+                    filterChain.doFilter(request, response);
             } else {
                 // If the token is not valid, you can return an unauthorized response
-                customizeUnauthorizedResponse(response,  "Token invalid");
+                customizeUnauthorizedResponse(response, "Token invalid");
             }
         }
     }
@@ -67,6 +69,7 @@ public class TokenAdminValidationFilter extends OncePerRequestFilter {
 
         sendJsonResponse(response, HttpStatus.FORBIDDEN, errorResponse);
     }
+
     private void customizeUnauthorizedResponse(HttpServletResponse response, String errorMessage) throws IOException {
         Map<String, String> errorResponse = new HashMap<>();
         errorResponse.put("statusCode", String.valueOf(HttpStatus.UNAUTHORIZED));
@@ -74,6 +77,7 @@ public class TokenAdminValidationFilter extends OncePerRequestFilter {
 
         sendJsonResponse(response, HttpStatus.UNAUTHORIZED, errorResponse);
     }
+
     private void sendJsonResponse(HttpServletResponse response, HttpStatus status, Map<String, ?> body) throws IOException {
         response.setStatus(status.value());
         response.setContentType("application/json");
