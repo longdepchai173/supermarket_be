@@ -48,9 +48,6 @@ public class Product {
     @Column(name = "sold_quantity")
     private Integer soldQuantity;
 
-    @Column(name = "shelf_qnt")
-    private Integer shelfQuantity;
-
     @Column(name = "shelf_arrange_qnt")
     private Integer shelfArrangeQuantity;
 
