@@ -38,6 +38,9 @@ public class Account {
     @Column(name = "has_warehouse")
     private boolean hasWarehouse;
 
+    @Column(name = "has_category")
+    private boolean hasCategory;
+
     private String address;
 
     @Column(name = "safety_inspection_img")
