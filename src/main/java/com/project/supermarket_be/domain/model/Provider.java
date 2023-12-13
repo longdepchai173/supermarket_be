@@ -1,6 +1,5 @@
 package com.project.supermarket_be.domain.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,16 +11,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "CATEGORY")
-public class Category {
+@Table(name = "PROVIDER")
+public class Provider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-    private Long categoryId;
+    private Long id;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "deleted_flag")
-    private boolean deletedFlag;
+    @Column(name = "contact_person")
+    private String contactPerson;
+
+    @Column(name = "phone_contact")
+    private String phoneContact;
+
+    @Column(name = "email_contact")
+    private String emailContact;
+
+    @Column(name = "note", columnDefinition = "TEXT")
+    private String note;
+
 }
