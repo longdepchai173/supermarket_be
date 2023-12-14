@@ -1,5 +1,4 @@
-package com.project.hafaly_be.config;
-
+package com.project.supermarket_be.config;
 import com.cloudinary.Cloudinary;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

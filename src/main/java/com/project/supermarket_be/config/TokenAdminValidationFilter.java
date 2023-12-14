@@ -35,7 +35,7 @@ public class TokenAdminValidationFilter extends OncePerRequestFilter {
         else {
             token = request.getHeader("Authorization");
             if (token == null)
-                throw new UserIDNotFoundException("1");
+                throw new UserIDNotFoundException("999999999");
 
             boolean isValidToken = isValidToken(token);
             String accessToken = token.substring(7);
@@ -47,7 +47,7 @@ public class TokenAdminValidationFilter extends OncePerRequestFilter {
                 else
                     customizeForbiddenResponse(response, "You haven't permission");
             } else if (isValidToken) {
-                    filterChain.doFilter(request, response);
+                filterChain.doFilter(request, response);
             } else {
                 // If the token is not valid, you can return an unauthorized response
                 customizeUnauthorizedResponse(response, "Token invalid");
