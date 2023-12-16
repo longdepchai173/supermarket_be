@@ -115,4 +115,9 @@ public class AccountServiceImpl implements AccountService {
                 .build();
     }
 
+    @Override
+    public Account getAccountById(Long id) {
+        return accountRepo.findById(id).orElseThrow(()->new UserIDNotFoundException(String.valueOf(id)));
+    }
+
 }

@@ -3,6 +3,7 @@ package com.project.supermarket_be.domain.service;
 import com.project.supermarket_be.api.dto.parameter.GetAllAccountParam;
 import com.project.supermarket_be.api.dto.request.CreateStaffRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
+import com.project.supermarket_be.domain.model.Account;
 import org.springframework.http.ResponseEntity;
 
 public interface AccountService {
@@ -10,4 +11,5 @@ public interface AccountService {
     ReturnResponse createStaffAccount(CreateStaffRequest request);
     ReturnResponse getAllAccountPaging(GetAllAccountParam param);
     ReturnResponse blockAccountById(String id);
+    Account getAccountById(Long id);
 }

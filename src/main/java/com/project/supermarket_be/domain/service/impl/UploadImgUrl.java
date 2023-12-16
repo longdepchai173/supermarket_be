@@ -2,7 +2,7 @@ package com.project.supermarket_be.domain.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.project.supermarket_be.domain.service.UploadImg;
+import com.project.supermarket_be.domain.service.UploadImgService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class UploadImgUrl implements UploadImg {
+public class UploadImgUrl implements UploadImgService {
     private final Cloudinary cloudinary;
     @Override
     public String uploadBase64Image(String base64Image) throws IOException {
