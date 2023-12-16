@@ -46,6 +46,18 @@ public class HandlerException {
     public ErrorResponse handlerUserNotFoundException(UserNotFoundException ex){
         return new ErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
+
+    @ExceptionHandler(CanNotUploadImage.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handlerCannotUploadBase64(CanNotUploadImage ex){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(CannotCreateProduct.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handlerCannotCreateProduct(CannotCreateProduct ex){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
 //    @ExceptionHandler(BadCredentialsException.class)
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
 //    public ErrorResponse handlerBadCredentialsException(BadCredentialsException ex){
@@ -94,6 +106,13 @@ public class HandlerException {
     public ErrorResponse handlerUserIDNotFoundException(UserIDNotFoundException ex){
         return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
+
+    @ExceptionHandler(CannotFoundWarehouseInvoice.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handlerWarehouseInvoice(CannotFoundWarehouseInvoice ex){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
     @ExceptionHandler(TokenIsEmptyException.class)
     @ResponseStatus(HttpStatus.BAD_GATEWAY)
     public ErrorResponse handleTokenIsEmpty(TokenIsEmptyException ex){
