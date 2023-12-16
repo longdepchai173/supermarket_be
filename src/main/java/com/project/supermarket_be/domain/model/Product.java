@@ -4,6 +4,7 @@ package com.project.supermarket_be.domain.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,14 +23,18 @@ public class Product {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "invoice_id", referencedColumnName = "id")
     private WarehouseInvoice invoice;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "provider_id", referencedColumnName = "id")
     private Provider provider;
 
+
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     private Category category;
 
@@ -50,6 +55,9 @@ public class Product {
 
     @Column(name = "shelf_arrange_qnt")
     private Integer shelfArrangeQuantity;
+
+    @Column(name = "shelf_qnt")
+    private Integer shelfQuantity;
 
     @Column(name = "is_disable")
     private boolean isDisabled;

@@ -1,5 +1,6 @@
 package com.project.supermarket_be.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.security.Timestamp;
+import java.util.Date;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -20,11 +23,12 @@ public class WarehouseInvoice {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "staff_id", referencedColumnName = "id")
     private Account staff;
 
     @Column(name = "receiving_time")
-    private Timestamp receivingTime;
+    private Date receivingTime;
 
     @Column(name = "supply_code")
     private String supplyCode;
@@ -37,11 +41,11 @@ public class WarehouseInvoice {
 
     @Lob
     @Column(name = "delivery_signature")
-    private byte[] deliverySignature;
+    private String deliverySignature;
 
     @Lob
     @Column(name = "receiving_signature")
-    private byte[] receivingSignature;
+    private String receivingSignature;
 
     @Column(name = "note")
     private String note;
