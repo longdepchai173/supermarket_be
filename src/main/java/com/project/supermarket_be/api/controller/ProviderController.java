@@ -25,5 +25,11 @@ public class ProviderController {
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
+    @PutMapping("/delete/{id}")
+    public ResponseEntity<ReturnResponse> deleteProvider(@PathVariable String id){
+        ReturnResponse response = service.deleteById(id);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+
 
 }

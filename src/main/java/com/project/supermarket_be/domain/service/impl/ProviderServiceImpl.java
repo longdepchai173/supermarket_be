@@ -11,6 +11,7 @@ import com.project.supermarket_be.domain.service.ProviderService;
 import com.project.supermarket_be.domain.service.UploadImgService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -78,6 +79,28 @@ public class ProviderServiceImpl implements ProviderService {
         return ReturnResponse.builder()
                 .statusCode(HttpStatus.OK)
                 .data(updateProvider)
+                .build();
+    }
+
+    @Override
+    public ReturnResponse deleteById(String id) {
+        String message;
+        HttpStatusCode httpStatus;
+        Provider provider = repo.findById(Long.valueOf(id)).orElseThrow(()-> new CanNotFoundProvider(id));
+        if(provider.getDeletedFlag() == true)
+        {
+            message = String.format("provider with id %s already deleted", id);
+            httpStatus = HttpStatus.CONFLICT;
+        }else {
+            message = String.format("Delete product with id %s successfully", id);
+            provider.setDeletedFlag(true);
+            httpStatus = HttpStatus.OK;
+            repo.save(provider);
+        }
+
+        return ReturnResponse.builder()
+                .statusCode(httpStatus)
+                .data(message)
                 .build();
     }
 }

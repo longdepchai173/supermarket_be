@@ -9,4 +9,5 @@ public interface ProviderService {
     Provider findById(Long id);
     ReturnResponse createProvider(CreateProviderRequest request);
     ReturnResponse update(CreateProviderRequest request, String id);
+    ReturnResponse deleteById(String id);
 }
