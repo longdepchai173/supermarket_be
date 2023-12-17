@@ -10,4 +10,5 @@ public interface CategoryService {
 
     ReturnResponse update(CategoryRequest request, String id);
 
+    ReturnResponse delete(String id);
 }

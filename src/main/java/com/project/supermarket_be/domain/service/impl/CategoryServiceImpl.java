@@ -45,4 +45,22 @@ public class CategoryServiceImpl implements CategoryService {
                 .build();
     }
 
+    @Override
+    public ReturnResponse delete(String id) {
+        Long categoryId = Long.valueOf(id);
+        Category category = repo.findById(categoryId).orElseThrow(()->new CategoryNotFound(id));
+        if(category.isDeletedFlag() == true) {
+            return ReturnResponse.builder()
+                    .statusCode(HttpStatus.CONFLICT)
+                    .data(String.format("Category with id %s already deleled", id))
+                    .build();
+        }
+        category.setDeletedFlag(true);
+        Category categoryUpdated = repo.save(category);
+        return ReturnResponse.builder()
+                .statusCode(HttpStatus.OK)
+                .data(categoryUpdated)
+                .build();
+    }
+
 }

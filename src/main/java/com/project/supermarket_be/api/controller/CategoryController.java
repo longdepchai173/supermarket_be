@@ -23,4 +23,9 @@ public class CategoryController {
         ReturnResponse response = service.update(request, id);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
+    @PutMapping("/delete/{id}")
+    public ResponseEntity<ReturnResponse> deleteCategory(@PathVariable String id){
+        ReturnResponse response = service.delete(id);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
 }
