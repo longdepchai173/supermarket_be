@@ -1,14 +1,12 @@
 package com.project.supermarket_be.api.controller;
 
 import com.project.supermarket_be.api.dto.request.CreateProviderRequest;
+import com.project.supermarket_be.api.dto.request.CreateStaffRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.domain.service.ProviderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -20,5 +18,12 @@ public class ProviderController {
         ReturnResponse response = service.createProvider(request);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ReturnResponse> updateProvider(@RequestBody CreateProviderRequest request, @PathVariable String id){
+        ReturnResponse response = service.update(request, id);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+
 
 }
