@@ -29,7 +29,14 @@ public class Provider {
     @Column(name = "email_contact")
     private String emailContact;
 
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "safety_inspection")
+    private String safetyInspection;
+
     @Column(name = "note", columnDefinition = "TEXT")
     private String note;
-
+    @Column(name = "deleted_flag")
+    private Boolean deletedFlag;
 }
