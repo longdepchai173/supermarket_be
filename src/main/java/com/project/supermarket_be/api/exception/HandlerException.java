@@ -125,4 +125,10 @@ public class HandlerException {
         return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
+    @ExceptionHandler(CanNotFoundProvider.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handlerNotFoundProvider(CanNotFoundProvider ex){
+        return new ErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
 }

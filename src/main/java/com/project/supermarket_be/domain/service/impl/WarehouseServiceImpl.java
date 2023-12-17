@@ -10,10 +10,7 @@ import com.project.supermarket_be.domain.model.Account;
 import com.project.supermarket_be.domain.model.Product;
 import com.project.supermarket_be.domain.model.WarehouseInvoice;
 import com.project.supermarket_be.domain.repository.WarehouseRepo;
-import com.project.supermarket_be.domain.service.AccountService;
-import com.project.supermarket_be.domain.service.ProductService;
-import com.project.supermarket_be.domain.service.UploadImgService;
-import com.project.supermarket_be.domain.service.WarehouseService;
+import com.project.supermarket_be.domain.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,12 +25,14 @@ public class WarehouseServiceImpl implements WarehouseService {
     private final AccountService accountService;
     private final ProductService productService;
     private final UploadImgService uploadImgService;
+    private final ProviderService providerService;
     private final WarehouseRepo repo;
 
     @Override
     public ReturnResponse createWarehouseInvoice(CreatesStockInvoice invoice) throws IOException {
         String deliverySignatureUrl;
         String receivingSignatureUrl;
+
         try {
             deliverySignatureUrl = uploadImgService.uploadBase64Image(invoice.getDeliverySignature());
         } catch (Exception e) {
@@ -49,6 +48,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 
         WarehouseInvoice warehouseInvoice = WarehouseInvoice.builder()
                 .staff(account)
+                .supplyCode(invoice.getSupplyCode())
                 .receivingTime(invoice.getReceivingTime())
                 .deliverySignature(deliverySignatureUrl)
                 .receivingSignature(receivingSignatureUrl)

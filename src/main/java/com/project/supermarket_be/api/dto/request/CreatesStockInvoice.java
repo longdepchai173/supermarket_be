@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 public class CreatesStockInvoice {
     private Long staffId;
+    private String providerCode;
     private Date receivingTime;
     private String supplyCode;
     private String deliveryPersonName;
