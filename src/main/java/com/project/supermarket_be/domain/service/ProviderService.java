@@ -10,4 +10,5 @@ public interface ProviderService {
     ReturnResponse createProvider(CreateProviderRequest request);
     ReturnResponse update(CreateProviderRequest request, String id);
     ReturnResponse deleteById(String id);
+    ReturnResponse getAllProvider();
 }

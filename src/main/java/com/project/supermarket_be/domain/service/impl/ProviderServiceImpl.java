@@ -14,6 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ProviderServiceImpl implements ProviderService {
@@ -102,5 +105,19 @@ public class ProviderServiceImpl implements ProviderService {
                 .statusCode(httpStatus)
                 .data(message)
                 .build();
+    }
+
+    @Override
+    public ReturnResponse getAllProvider() {
+
+        List<Provider> providerList = new ArrayList<>();
+
+        providerList = repo.findProviderNotDeleted();
+
+        ReturnResponse response = ReturnResponse.builder()
+                .statusCode(HttpStatus.OK)
+                .data(providerList)
+                .build();
+        return response;
     }
 }

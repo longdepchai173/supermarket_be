@@ -5,6 +5,7 @@ import com.project.supermarket_be.api.dto.request.CreateStaffRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.domain.service.ProviderService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,5 +32,9 @@ public class ProviderController {
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-
+    @GetMapping("/all")
+    public ResponseEntity<ReturnResponse> getAllProvider(){
+        ReturnResponse response = service.getAllProvider();
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
 }
