@@ -1,5 +1,6 @@
 package com.project.supermarket_be.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +41,7 @@ public class Inventory {
     private String note;
 
     @Column(name = "deleted_flag")
+    @JsonIgnore
     private boolean deletedFlag;
 
 }

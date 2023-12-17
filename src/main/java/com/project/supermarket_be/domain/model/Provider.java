@@ -1,5 +1,6 @@
 package com.project.supermarket_be.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,5 +39,6 @@ public class Provider {
     @Column(name = "note", columnDefinition = "TEXT")
     private String note;
     @Column(name = "deleted_flag")
+    @JsonIgnore
     private Boolean deletedFlag;
 }

@@ -72,6 +72,7 @@ public class Product {
     private Date manufactureDate;
 
     @Column(name = "deleted_flag")
+    @JsonIgnore
     private boolean deletedFlag;
 
 }

@@ -51,5 +51,6 @@ public class WarehouseInvoice {
     private String note;
 
     @Column(name = "deleted_flag")
+    @JsonIgnore
     private boolean deletedFlag;
 }

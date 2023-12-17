@@ -1,5 +1,6 @@
 package com.project.supermarket_be.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.supermarket_be.api.dto.request.CreateStaffRequest;
 import com.project.supermarket_be.domain.enums.Role;
 import jakarta.persistence.*;
@@ -63,6 +64,7 @@ public class Account {
     private boolean hasStatistic;
 
     @Column(name = "deleted_flag")
+    @JsonIgnore
     private boolean deleteFlag;
 
 
