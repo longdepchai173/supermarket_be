@@ -28,4 +28,10 @@ public class CategoryController {
         ReturnResponse response = service.delete(id);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
+
+    @GetMapping("all")
+    public ResponseEntity<ReturnResponse> getAllCategory(){
+        ReturnResponse response = service.getAll();
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
 }

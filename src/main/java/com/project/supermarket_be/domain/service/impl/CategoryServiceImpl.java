@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
@@ -61,6 +63,12 @@ public class CategoryServiceImpl implements CategoryService {
                 .statusCode(HttpStatus.OK)
                 .data(categoryUpdated)
                 .build();
+    }
+
+    @Override
+    public ReturnResponse getAll() {
+        List<Category> categoryList = repo.getAllCategory();
+        return ReturnResponse.builder().statusCode(HttpStatus.OK).data(categoryList).build();
     }
 
 }
