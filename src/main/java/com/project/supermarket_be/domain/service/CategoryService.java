@@ -7,4 +7,7 @@ import com.project.supermarket_be.domain.model.Category;
 public interface CategoryService {
     Category findById(Long id);
     ReturnResponse create(CategoryRequest request);
+
+    ReturnResponse update(CategoryRequest request, String id);
+
 }

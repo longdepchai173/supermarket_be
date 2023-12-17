@@ -32,4 +32,17 @@ public class CategoryServiceImpl implements CategoryService {
                 .data(categorySaved)
                 .build();
     }
+
+    @Override
+    public ReturnResponse update(CategoryRequest request, String id) {
+        Long categoryId = Long.valueOf(id);
+        Category category = repo.findById(categoryId).orElseThrow(()->new CategoryNotFound(id));
+        category.setName(request.getName());
+        Category categoryUpdated = repo.save(category);
+        return ReturnResponse.builder()
+                .statusCode(HttpStatus.OK)
+                .data(categoryUpdated)
+                .build();
+    }
+
 }
