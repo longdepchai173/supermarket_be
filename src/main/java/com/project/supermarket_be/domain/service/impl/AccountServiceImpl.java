@@ -9,6 +9,7 @@ import com.project.supermarket_be.domain.enums.FindAccountBy;
 import com.project.supermarket_be.domain.model.Account;
 import com.project.supermarket_be.domain.repository.AccountRepo;
 import com.project.supermarket_be.domain.service.AccountService;
+import com.project.supermarket_be.domain.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -24,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
     private final AccountRepo accountRepo;
+    private final JwtService jwtService;
 
     @Override
     public ReturnResponse getAccountDetailById(String accountId) {
@@ -96,6 +98,17 @@ public class AccountServiceImpl implements AccountService {
 
         return ReturnResponse.builder()
                 .statusCode(HttpStatus.OK).data(result)
+                .build();
+    }
+
+    @Override
+    public ReturnResponse getAccountByToken(String token) {
+        String accessToken = token.substring(7);
+        String email = jwtService.extractUsername(accessToken);
+        Account account = accountRepo.findByEmail(email);
+        return ReturnResponse.builder()
+                .data(account)
+                .statusCode(HttpStatus.OK)
                 .build();
     }
 

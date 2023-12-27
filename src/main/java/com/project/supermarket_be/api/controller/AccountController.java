@@ -5,6 +5,7 @@ import com.project.supermarket_be.api.dto.request.CreateStaffRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.domain.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,11 @@ public class AccountController {
     @GetMapping("{accountId}")
     public ResponseEntity<ReturnResponse> getAccountDetail (@PathVariable String accountId){
         ReturnResponse response = accountService.getAccountDetailById(accountId);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+    @GetMapping("/token")
+    public ResponseEntity<ReturnResponse> getAccountDetailByToken (@RequestHeader("Authorization") String token){
+        ReturnResponse response = accountService.getAccountByToken(token);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
     @GetMapping("")

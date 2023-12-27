@@ -10,6 +10,7 @@ public interface AccountService {
     ReturnResponse getAccountDetailById(String id);
     ReturnResponse createStaffAccount(CreateStaffRequest request);
     ReturnResponse getAllAccountPaging(GetAllAccountParam param);
+    ReturnResponse getAccountByToken(String token);
     ReturnResponse blockAccountById(String id);
     Account getAccountById(Long id);
 }
