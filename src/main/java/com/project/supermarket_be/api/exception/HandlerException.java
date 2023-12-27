@@ -24,6 +24,7 @@ public class HandlerException {
         return errors;
     }
 
+
 //    @ExceptionHandler(InvalidArgumentException.class)
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
 //    public Map<String, String> handlerInvalidArgumentException(InvalidArgumentException ex){
@@ -44,6 +45,11 @@ public class HandlerException {
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handlerUserNotFoundException(UserNotFoundException ex){
+        return new ErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+    @ExceptionHandler(ProductCannotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handlerProductNotFoundException(ProductCannotFound ex){
         return new ErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 

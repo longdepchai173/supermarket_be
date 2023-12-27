@@ -4,6 +4,7 @@ import com.project.supermarket_be.api.dto.request.CreatesStockInvoice;
 import com.project.supermarket_be.api.dto.request.ProductRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.api.exception.customerException.CannotCreateProduct;
+import com.project.supermarket_be.api.exception.customerException.ProductCannotFound;
 import com.project.supermarket_be.domain.model.Category;
 import com.project.supermarket_be.domain.model.Product;
 import com.project.supermarket_be.domain.model.Provider;
@@ -13,6 +14,7 @@ import com.project.supermarket_be.domain.service.CategoryService;
 import com.project.supermarket_be.domain.service.ProductService;
 import com.project.supermarket_be.domain.service.WarehouseService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -50,6 +52,16 @@ public class ProductServiceImpl implements ProductService {
             throw new CannotCreateProduct(product.getProductCode());
         }
         return productSaved;
+    }
+
+    @Override
+    public ReturnResponse getProductById(String productId) {
+        Long covProductId = Long.valueOf(productId);
+        Product product = repo.findById(covProductId).orElseThrow(()->new ProductCannotFound(productId));
+        return ReturnResponse.builder()
+                .statusCode(HttpStatus.OK)
+                .data(product)
+                .build();
     }
 
 }
