@@ -6,6 +6,7 @@ import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.api.exception.customerException.CannotCreateProduct;
 import com.project.supermarket_be.domain.model.Category;
 import com.project.supermarket_be.domain.model.Product;
+import com.project.supermarket_be.domain.model.Provider;
 import com.project.supermarket_be.domain.model.WarehouseInvoice;
 import com.project.supermarket_be.domain.repository.ProductRepo;
 import com.project.supermarket_be.domain.service.CategoryService;
@@ -22,13 +23,14 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepo repo;
     private final CategoryService categoryService;
     @Override
-    public Product createProduct(ProductRequest product, WarehouseInvoice invoice) {
+    public Product createProduct(ProductRequest product, Provider provider, WarehouseInvoice invoice) {
 
         Product productMapper;
         Product productSaved;
         try{
             productMapper = Product.builder()
                     .invoice(invoice)
+                    .provider(provider)
                     .category(categoryService.findById(product.getCategoryId()))
                     .productCode(product.getProductCode())
                     .batchCode(product.getBatchCode())

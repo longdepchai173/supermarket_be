@@ -12,6 +12,7 @@ public class CreatesStockInvoice {
     private Long staffId;
     private String providerCode;
     private Date receivingTime;
+    private Long providerId;
     private String supplyCode;
     private String deliveryPersonName;
     private String receivingClerkName;

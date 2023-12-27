@@ -8,6 +8,7 @@ import com.project.supermarket_be.api.exception.customerException.CanNotUploadIm
 import com.project.supermarket_be.api.exception.customerException.CannotFoundWarehouseInvoice;
 import com.project.supermarket_be.domain.model.Account;
 import com.project.supermarket_be.domain.model.Product;
+import com.project.supermarket_be.domain.model.Provider;
 import com.project.supermarket_be.domain.model.WarehouseInvoice;
 import com.project.supermarket_be.domain.repository.WarehouseRepo;
 import com.project.supermarket_be.domain.service.*;
@@ -61,9 +62,12 @@ public class WarehouseServiceImpl implements WarehouseService {
 
         WarehouseInvoice savedInvoice = repo.save(warehouseInvoice);
         List<Product> productListResult = new ArrayList<>();
+
+        Provider provider = providerService.findById(invoice.getProviderId());
+
         try{
             for (ProductRequest product : invoice.getListProducts()) {
-                Product temp = productService.createProduct(product, savedInvoice);
+                Product temp = productService.createProduct(product,provider,savedInvoice);
                 productListResult.add(temp);
             }
         }
