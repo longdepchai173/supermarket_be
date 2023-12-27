@@ -2,6 +2,7 @@ package com.project.supermarket_be.api.controller;
 
 import com.project.supermarket_be.api.dto.parameter.GetAllAccountParam;
 import com.project.supermarket_be.api.dto.request.CreateStaffRequest;
+import com.project.supermarket_be.api.dto.request.UpdateAccountRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.domain.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,13 @@ public class AccountController {
     @PostMapping("/block/{accountId}")
     public ResponseEntity<ReturnResponse> blockStaffAccount(@PathVariable String accountId){
         ReturnResponse response = accountService.blockAccountById(accountId);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+    @PutMapping("/update/{accountId}")
+    public ResponseEntity<ReturnResponse> updateAccountById(@PathVariable String accountId,
+                                                            @RequestBody UpdateAccountRequest request){
+        request.setAccountId(accountId);
+        ReturnResponse response = accountService.update(request);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 }

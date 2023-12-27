@@ -2,6 +2,7 @@ package com.project.supermarket_be.domain.service.impl;
 
 import com.project.supermarket_be.api.dto.parameter.GetAllAccountParam;
 import com.project.supermarket_be.api.dto.request.CreateStaffRequest;
+import com.project.supermarket_be.api.dto.request.UpdateAccountRequest;
 import com.project.supermarket_be.api.dto.response.GetAccountResponse;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.api.exception.customerException.*;
@@ -131,6 +132,33 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account getAccountById(Long id) {
         return accountRepo.findById(id).orElseThrow(()->new UserIDNotFoundException(String.valueOf(id)));
+    }
+
+    @Override
+    public ReturnResponse update(UpdateAccountRequest request) {
+        Long covAccountId = Long.valueOf(request.getAccountId());
+        Account account = accountRepo.findById(covAccountId).orElseThrow(()->new UserIDNotFoundException(request.getAccountId()));
+        account.setName(request.getName());
+//        account.setEmail(request.getEmail());
+        if (request.getPassword().equals("")) {
+            System.out.println("");
+        } else {
+            account.setPassword(request.getPassword());
+        }
+        account.setGender(request.isGender());
+        account.setPhone(request.getPhone());
+        account.setPosition(request.getPosition());
+        account.setHasWarehouse(request.isHasWarehouse());
+        account.setHasShelf(request.isHasShelf());
+        account.setHasSupply(request.isHasSupply());
+        account.setHasAudit(request.isHasAudit());
+        account.setHasCategory(request.isHasCategory());
+
+        accountRepo.save(account);
+        return ReturnResponse.builder()
+                .statusCode(HttpStatus.OK)
+                .data(account)
+                .build();
     }
 
 }

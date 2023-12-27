@@ -29,7 +29,7 @@ public class Account {
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
-    private String gender;
+    private Boolean gender;
 
 
     private String role;
@@ -73,7 +73,7 @@ public class Account {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(request.getPassword())
-                .gender(String.valueOf(request.isGender()))
+                .gender(request.isGender())
                 .role(request.getRole())
                 .phone(request.getPhone())
                 .position(request.getPosition())
