@@ -71,4 +71,10 @@ public class CategoryServiceImpl implements CategoryService {
         return ReturnResponse.builder().statusCode(HttpStatus.OK).data(categoryList).build();
     }
 
+    @Override
+    public String getName(Long categoryId) {
+        Category category = repo.findById(categoryId).orElseThrow(()->new CategoryNotFound(String.valueOf(categoryId)));
+        return category.getName();
+    }
+
 }

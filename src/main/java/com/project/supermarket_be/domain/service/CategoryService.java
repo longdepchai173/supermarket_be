@@ -13,4 +13,5 @@ public interface CategoryService {
     ReturnResponse delete(String id);
 
     ReturnResponse getAll();
+    String getName(Long categoryId);
 }

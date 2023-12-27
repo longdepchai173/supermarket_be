@@ -2,8 +2,10 @@ package com.project.supermarket_be.domain.service.impl;
 
 import com.project.supermarket_be.api.dto.request.CreatesStockInvoice;
 import com.project.supermarket_be.api.dto.request.ProductRequest;
+import com.project.supermarket_be.api.dto.response.ProductIdCategoryNameDto;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.api.exception.customerException.CannotCreateProduct;
+import com.project.supermarket_be.api.exception.customerException.CategoryNotFound;
 import com.project.supermarket_be.api.exception.customerException.ProductCannotFound;
 import com.project.supermarket_be.domain.model.Category;
 import com.project.supermarket_be.domain.model.Product;
@@ -18,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -62,6 +65,23 @@ public class ProductServiceImpl implements ProductService {
                 .statusCode(HttpStatus.OK)
                 .data(product)
                 .build();
+    }
+
+    @Override
+    public ProductIdCategoryNameDto getNameAndCategoryId(Long productId) {
+        List<Object[]> results = repo.getProductName(productId);
+        if(results.isEmpty()){
+            throw new ProductCannotFound(String.valueOf(productId));
+        }
+        for(Object[] result : results){
+            String product_name = (String)result[0];
+            Integer category_id = (Integer)result[1];
+            return ProductIdCategoryNameDto.builder()
+                    .productName(product_name)
+                    .categoryId(category_id)
+                    .build();
+        }
+        return null;
     }
 
 }

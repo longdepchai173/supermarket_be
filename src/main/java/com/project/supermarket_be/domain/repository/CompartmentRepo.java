@@ -11,5 +11,7 @@ import java.util.List;
 @Repository
 public interface CompartmentRepo extends JpaRepository<Compartment, Long> {
     @Query(value = "select e.id, e.current_quantity from Compartment e where e.tier_id = :tierId and deleted_flag = false", nativeQuery = true)
+    List<Object[]> getCurrentQuantityOfCompartmentByTierId(@Param("tierId") Long tierId);
+    @Query(value = "select e.id, e.product_id, e.compartment_code, e.current_quantity from Compartment e where e.tier_id = :tierId and deleted_flag = false", nativeQuery = true)
     List<Object[]> getAllCompartmentByTierId(@Param("tierId") Long tierId);
 }

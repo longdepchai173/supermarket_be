@@ -18,10 +18,12 @@ public class Compartment {
 
     @ManyToOne
     @JoinColumn(name = "tier_id", referencedColumnName = "id")
+    @JsonIgnore
     private Tier tier;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JsonIgnore
     private Product product;
 
     @Column(name = "compartment_code")
