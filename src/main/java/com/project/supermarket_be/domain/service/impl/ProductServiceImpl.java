@@ -40,6 +40,7 @@ public class ProductServiceImpl implements ProductService {
             productMapper = Product.builder()
                     .invoice(invoice)
                     .provider(provider)
+                    .productName(product.getProductName())
                     .category(categoryService.findById(product.getCategoryId()))
                     .productCode(product.getProductCode())
                     .batchCode(product.getBatchCode())

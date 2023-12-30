@@ -41,6 +41,9 @@ public class Product {
     @Column(name = "product_code")
     private String productCode;
 
+    @Column(name = "product_name")
+    private String productName;
+
     @Column(name = "batch_code")
     private String batchCode;
 

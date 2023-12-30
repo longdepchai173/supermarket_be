@@ -8,6 +8,7 @@ import java.util.Date;
 @Data
 public class ProductRequest {
     private Long categoryId;
+    private String productName;
     private Long invoiceId;
     private Long supplyId;
     private String productCode;
