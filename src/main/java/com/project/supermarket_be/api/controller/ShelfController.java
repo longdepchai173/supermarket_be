@@ -1,6 +1,7 @@
 package com.project.supermarket_be.api.controller;
 
 import com.project.supermarket_be.api.dto.request.CreateShelfRequest;
+import com.project.supermarket_be.api.dto.request.ShelfRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.domain.service.ShelfService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,14 @@ public class ShelfController {
     @PostMapping("/create")
     public ResponseEntity<ReturnResponse> create(@RequestBody CreateShelfRequest request) {
         ReturnResponse response = service.create(request);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+
+    @PutMapping("/update/{shelfId}")
+    public ResponseEntity<ReturnResponse> update(@PathVariable("shelfId") Integer shelfId,
+                                                 @RequestBody ShelfRequest request){
+        request.setId(shelfId);
+        ReturnResponse response = service.update(request);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 

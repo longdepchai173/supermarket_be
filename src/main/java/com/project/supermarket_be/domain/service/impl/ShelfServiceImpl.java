@@ -1,8 +1,10 @@
 package com.project.supermarket_be.domain.service.impl;
 
 import com.project.supermarket_be.api.dto.request.CreateShelfRequest;
+import com.project.supermarket_be.api.dto.request.ShelfRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.api.dto.response.ShelfResponse;
+import com.project.supermarket_be.api.exception.customerException.UserIDNotFoundException;
 import com.project.supermarket_be.domain.model.Category;
 import com.project.supermarket_be.domain.model.Shelf;
 import com.project.supermarket_be.domain.repository.ShelfRepo;
@@ -51,8 +53,17 @@ public class ShelfServiceImpl implements ShelfService {
     }
 
     @Override
-    public ReturnResponse update(Long id) {
-        return null;
+    public ReturnResponse update(ShelfRequest request) {
+        Category category = categoryService.findById(Long.valueOf(request.getCategoryId()));
+        Shelf shelf = repo.findById(Long.valueOf(request.getId())).orElseThrow(()->new UserIDNotFoundException(request.getShelfCode()));
+        shelf.setCategory(category);
+        shelf.setShelfCode(request.getShelfCode());
+
+        Shelf shelfSaved = repo.save(shelf);
+        return ReturnResponse.builder()
+                .statusCode(HttpStatus.OK)
+                .data("Update shelf successfully")
+                .build();
     }
 
     @Override
