@@ -49,4 +49,6 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
                 ))
                 .collect(Collectors.toList());
     }
+    @Query(value = "Select shelf_qnt from product where id = :productId",nativeQuery = true)
+    Integer getShelfQuantity(@Param("productId") Long productId);
 }

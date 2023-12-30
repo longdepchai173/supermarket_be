@@ -3,6 +3,8 @@ package com.project.supermarket_be.domain.service.impl;
 import com.project.supermarket_be.api.dto.response.CompartmentResponse;
 import com.project.supermarket_be.api.dto.response.ProductIdCategoryNameDto;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
+import com.project.supermarket_be.api.exception.customerException.UserIDNotFoundException;
+import com.project.supermarket_be.api.exception.customerException.UserNotFoundException;
 import com.project.supermarket_be.domain.model.Compartment;
 import com.project.supermarket_be.domain.repository.CompartmentRepo;
 import com.project.supermarket_be.domain.service.CategoryService;
@@ -75,5 +77,29 @@ public class CompartmentServiceImpl implements CompartmentService {
     public Integer getCurrentQuantityByShelfId(Long shelfId){
         Integer quantity = repo.getCurrentQuantityByShelfId(shelfId);
         return quantity;
+    }
+
+    @Override
+    public ReturnResponse clear(Long compartmentId) {
+
+        Compartment compartment = repo.findById(compartmentId).orElseThrow(()->new UserNotFoundException("Khong tim thay compartment"));
+        Long productId = compartment.getProduct().getId();
+        Integer shelfQnt = productService.getShelfQuantity(productId);
+        Integer subQnt = shelfQnt - compartment.getCurrentQuantity();
+        boolean resultUpdate = productService.updateShelfQuantity(subQnt,productId);
+        if(resultUpdate){
+            compartment.setCurrentQuantity(0);
+            repo.save(compartment);
+            return ReturnResponse.builder()
+                    .statusCode(HttpStatus.OK)
+                    .data("Clear compartment quantity successfully")
+                    .build();
+        }else{
+            productService.updateShelfQuantity(shelfQnt, productId);
+            return ReturnResponse.builder()
+                    .statusCode(HttpStatus.BAD_REQUEST)
+                    .data("Can not clear compartment")
+                    .build();
+        }
     }
 }

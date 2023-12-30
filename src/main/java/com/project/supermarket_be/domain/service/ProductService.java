@@ -15,4 +15,7 @@ public interface ProductService {
     ProductIdCategoryNameDto getNameAndCategoryId(Long productId);
 
     ReturnResponse getAllProductPaging(GetAllProductParam param);
+    Integer getShelfQuantity(Long productId);
+
+    boolean updateShelfQuantity(Integer subQnt, Long productId);
 }

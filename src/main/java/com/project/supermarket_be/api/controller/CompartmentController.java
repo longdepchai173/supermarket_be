@@ -6,10 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -22,4 +19,9 @@ public class CompartmentController {
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
+    @PutMapping("/clear/{compartmentId}")
+    public ResponseEntity<ReturnResponse> clearCompartment(@PathVariable String compartmentId){
+        ReturnResponse response = compartmentService.clear(Long.valueOf(compartmentId));
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
 }

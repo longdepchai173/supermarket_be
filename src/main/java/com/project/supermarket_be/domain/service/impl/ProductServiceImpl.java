@@ -102,4 +102,21 @@ public class ProductServiceImpl implements ProductService {
                 .build();
     }
 
+    @Override
+    public Integer getShelfQuantity(Long productId) {
+        return repo.getShelfQuantity(productId);
+    }
+
+    @Override
+    public boolean updateShelfQuantity(Integer subQnt, Long productId) {
+        Product product = repo.findById(productId).orElseThrow(()-> new ProductCannotFound(String.valueOf(productId)));
+        product.setShelfQuantity(subQnt);
+        try{
+            repo.save(product);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
 }
