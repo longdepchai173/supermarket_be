@@ -1,6 +1,7 @@
 package com.project.supermarket_be.api.controller;
 
 import com.project.supermarket_be.api.dto.parameter.GetAllProductParam;
+import com.project.supermarket_be.api.dto.request.AddProductToShelfRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.domain.service.ProductService;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -56,4 +57,9 @@ public class ProductController {
         ReturnResponse response = productService.getProductById(productId);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
+
+//    @PostMapping("/add-to-shelf")
+//    public ResponseEntity<ReturnResponse> addProductToShelf(@RequestBody AddProductToShelfRequest request){
+////        ReturnResponse response = productService.
+//    }
 }

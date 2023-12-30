@@ -9,14 +9,14 @@ public class AppConfiguration {
     public FilterRegistrationBean<CorsFilter> corsFilterRegistration() {
         FilterRegistrationBean<CorsFilter> registrationBean =
                 new FilterRegistrationBean<>(new CorsFilter());
-        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        registrationBean.setOrder(Ordered.LOWEST_PRECEDENCE);
         return registrationBean;
     }
     @Bean
     public FilterRegistrationBean<TokenAdminValidationFilter> tokenAdminValidationFilter() {
         FilterRegistrationBean<TokenAdminValidationFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new TokenAdminValidationFilter());
-        registrationBean.addUrlPatterns("/api/accounts/*");
+        registrationBean.addUrlPatterns("/api/account/*");
         return registrationBean;
     }
 }
