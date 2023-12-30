@@ -15,10 +15,10 @@ public class CorsFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String[] allowedOrigins = {"http://localhost:3000", "http://localhost:5173"};
+        String[] allowedOrigins = {"http://localhost:3000", "http://localhost:5173, https://slug-panel.onrender.com"};
 
         String origin = request.getHeader("Origin");
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", isOriginAllowed(origin, allowedOrigins) ? origin : "");
 
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
