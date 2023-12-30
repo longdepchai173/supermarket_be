@@ -17,8 +17,10 @@ public class Shelf {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "category_id")
-    private Long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
+    @JsonIgnore
+    private Category category;
 
     @Column(name = "shelf_code")
     private String shelfCode;
