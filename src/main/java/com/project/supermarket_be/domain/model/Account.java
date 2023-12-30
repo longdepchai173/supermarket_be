@@ -82,6 +82,7 @@ public class Account {
                 .hasSupply(request.isHasSupply())
                 .hasAudit(request.isHasAudit())
                 .hasStatistic(request.isHasStatistic())
+                .hasCategory(request.isHasCategory())
                 .build();
     }
 

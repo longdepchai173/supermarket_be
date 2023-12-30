@@ -16,5 +16,6 @@ public class CreateStaffRequest {
     private boolean hasSupply;
     private boolean hasAudit;
     private boolean hasStatistic;
+    private boolean hasCategory;
 }
 
