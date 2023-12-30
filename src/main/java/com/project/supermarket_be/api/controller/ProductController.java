@@ -22,9 +22,9 @@ public class ProductController {
 
     @GetMapping("/all")
     public ResponseEntity<ReturnResponse> getAllProduct(
-            @RequestParam(name = "page-number") int pageNumber,
-            @RequestParam(name = "limit") int limit,
-            @RequestParam(name = "search", defaultValue = "null") String search,
+            @RequestParam(name = "page-number", defaultValue = "0") int pageNumber,
+            @RequestParam(name = "limit", defaultValue = "100") int limit,
+            @RequestParam(name = "search", defaultValue = "") String search,
             @RequestParam(name = "from") String from,
             @RequestParam(name = "to") String to) {
         SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
