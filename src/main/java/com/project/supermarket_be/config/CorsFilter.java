@@ -15,7 +15,7 @@ public class CorsFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String[] allowedOrigins = {"http://localhost:3000", "http://localhost:5173, https://slug-panel.onrender.com"};
+        String[] allowedOrigins = {"http://localhost:3000", "http://localhost:5173", "https://slug-panel.onrender.com"};
 
         String origin = request.getHeader("Origin");
         response.setHeader("Access-Control-Allow-Origin", isOriginAllowed(origin, allowedOrigins) ? origin : "");
