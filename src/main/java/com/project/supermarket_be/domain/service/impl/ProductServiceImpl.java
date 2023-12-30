@@ -1,5 +1,7 @@
 package com.project.supermarket_be.domain.service.impl;
 
+import com.project.supermarket_be.api.dto.mapping_output.GetAllProductByConditionDto;
+import com.project.supermarket_be.api.dto.parameter.GetAllProductParam;
 import com.project.supermarket_be.api.dto.request.CreatesStockInvoice;
 import com.project.supermarket_be.api.dto.request.ProductRequest;
 import com.project.supermarket_be.api.dto.response.ProductIdCategoryNameDto;
@@ -20,6 +22,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -82,6 +86,19 @@ public class ProductServiceImpl implements ProductService {
                     .build();
         }
         return null;
+    }
+
+    @Override
+    public ReturnResponse getAllProductPaging(GetAllProductParam param) {
+        String search = param.getSearch();
+        String from = param.getFrom();
+        String to = param.getTo();
+        List<GetAllProductByConditionDto> productByCategoryName = repo.getProductsInfoByCondition(search, from, to);
+
+        return ReturnResponse.builder()
+                .statusCode(HttpStatus.OK)
+                .data(productByCategoryName)
+                .build();
     }
 
 }

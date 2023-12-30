@@ -1,5 +1,6 @@
 package com.project.supermarket_be.domain.service;
 
+import com.project.supermarket_be.api.dto.parameter.GetAllProductParam;
 import com.project.supermarket_be.api.dto.request.CreatesStockInvoice;
 import com.project.supermarket_be.api.dto.request.ProductRequest;
 import com.project.supermarket_be.api.dto.response.ProductIdCategoryNameDto;
@@ -12,4 +13,6 @@ public interface ProductService {
     Product createProduct(ProductRequest product, Provider provider, WarehouseInvoice invoice);
     ReturnResponse getProductById(String productId);
     ProductIdCategoryNameDto getNameAndCategoryId(Long productId);
+
+    ReturnResponse getAllProductPaging(GetAllProductParam param);
 }
