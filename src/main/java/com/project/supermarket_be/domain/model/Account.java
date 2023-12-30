@@ -76,6 +76,7 @@ public class Account {
                 .gender(request.isGender())
                 .role(request.getRole())
                 .phone(request.getPhone())
+                .status(1)
                 .position(request.getPosition())
                 .hasWarehouse(request.isHasWarehouse())
                 .hasShelf(request.isHasShelf())

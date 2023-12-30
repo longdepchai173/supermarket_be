@@ -53,49 +53,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ReturnResponse getAllAccountPaging(GetAllAccountParam param) {
-        PageRequest pageRequest = PageRequest.of(param.getPageNumber(), param.getLimit());
-        Page<Account> page;
-        String search = param.getSearch();
-        Integer status = param.getStatus();
-        String position = param.getPosition();
-
-        if(search.equals("all")){
-           if(status == -1){
-               if(position.equals("all")){
-                   page = accountRepo.findAll(pageRequest);
-               }else
-                   page = accountRepo.findByPositionContaining(position, pageRequest);
-           }else{
-               if(position.equals("all")){
-                    page = accountRepo.findByStatus(status, pageRequest);
-               }else
-                   page = accountRepo.findByPositionContainingAndStatus(position, status, pageRequest);
-           }
-        }else { // name have character
-            if(status == -1){ // status not have value
-                if(position.equals("all")){
-                    page = accountRepo.findByNameContaining(search, pageRequest);
-                }else {
-                    page = accountRepo.findByPositionContainingAndNameContaining(position, search, pageRequest);
-                }
-            }
-            else {
-                if(position.equals("all")){
-                    page = accountRepo.findByNameContainingAndStatus(search, status, pageRequest);
-                }else{
-                    page = accountRepo.findByNameContainingAndPositionContainingAndStatus(
-                            search, position, status, pageRequest);
-                }
-            }
-        }
-
-        List<Account> accountList = page.getContent();
-
-        GetAccountResponse result = GetAccountResponse.builder()
-                .currentPage(param.getPageNumber())
-                .totalPage(page.getTotalPages())
-                .accounts(accountList)
-                .build();
+        List<Account> result = new ArrayList<>();
+        if(param.getSearch().isEmpty()){
+            result = accountRepo.findAll();
+        }else
+            result = accountRepo.getAllAccountByCondition(param.getSearch(), param.getStatus());
 
         return ReturnResponse.builder()
                 .statusCode(HttpStatus.OK).data(result)

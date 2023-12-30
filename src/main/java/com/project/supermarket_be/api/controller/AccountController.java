@@ -29,7 +29,7 @@ public class AccountController {
     @GetMapping("")
     public ResponseEntity<ReturnResponse> getAllAccountPaging(@RequestParam(name = "page-number", defaultValue = "0") int pageNumber,
                                                               @RequestParam(name = "limit", defaultValue = "10") int limit,
-                                                              @RequestParam(name = "search", defaultValue = "all") String search,
+                                                              @RequestParam(name = "search", defaultValue = "") String search,
                                                               @RequestParam(name = "status", defaultValue = "-1") int status,
                                                               @RequestParam(name = "position", defaultValue = "all") String position){
         GetAllAccountParam param = GetAllAccountParam.builder().
