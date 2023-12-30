@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -20,22 +22,18 @@ public class Inventory {
     private Long inventoryId;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product;
-
-    @ManyToOne
     @JoinColumn(name = "create_by_staff", referencedColumnName = "id")
     private Account createdByStaff;
 
-    @Column(name = "inventory_qnt")
-    private Integer inventoryQuantity;
-
-    @Column(name = "product_status", length = 20)
-    private String productStatus;
+    @Column(name = "inventory_time")
+    private Date inventoryTime;
 
     @Lob
     @Column(name = "staff_signature")
-    private byte[] staffSignature;
+    private String staffSignature;
+
+    @Column(name = "inventory_code")
+    private String inventoryCode;
 
     @Column(name = "note", columnDefinition = "TEXT")
     private String note;
