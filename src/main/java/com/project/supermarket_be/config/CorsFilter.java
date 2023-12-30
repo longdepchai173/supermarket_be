@@ -15,13 +15,12 @@ public class CorsFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String[] allowedOrigins = {"http://localhost:3000", "http://localhost:5173", "https://slug-panel.onrender.com"};
 
-        String origin = request.getHeader("Origin");
-        response.setHeader("Access-Control-Allow-Origin", isOriginAllowed(origin, allowedOrigins) ? origin : "");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000, http://localhost:5173, https://slug-panel.onrender.com");
 
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Accept");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Max-Age", "3600");
 
         if ("OPTIONS".equals(request.getMethod())) {
@@ -29,14 +28,5 @@ public class CorsFilter extends OncePerRequestFilter {
         } else {
             filterChain.doFilter(request, response);
         }
-    }
-
-    private boolean isOriginAllowed(String origin, String[] allowedOrigins) {
-        for (String allowedOrigin : allowedOrigins) {
-            if (allowedOrigin.equals(origin)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
