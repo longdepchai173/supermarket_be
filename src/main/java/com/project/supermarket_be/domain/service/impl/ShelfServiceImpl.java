@@ -5,10 +5,12 @@ import com.project.supermarket_be.api.dto.request.ShelfRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.api.dto.response.ShelfResponse;
 import com.project.supermarket_be.api.exception.customerException.UserIDNotFoundException;
+import com.project.supermarket_be.api.exception.customerException.UserNotFoundException;
 import com.project.supermarket_be.domain.model.Category;
 import com.project.supermarket_be.domain.model.Shelf;
 import com.project.supermarket_be.domain.repository.ShelfRepo;
 import com.project.supermarket_be.domain.service.CategoryService;
+import com.project.supermarket_be.domain.service.CompartmentService;
 import com.project.supermarket_be.domain.service.ShelfService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import java.util.List;
 public class ShelfServiceImpl implements ShelfService {
     private final ShelfRepo repo;
     private final CategoryService categoryService;
+    private final CompartmentService compartmentService;
     @Override
     public ReturnResponse getAll() {
         List<ShelfResponse> shelves = repo.getAll();
@@ -68,6 +71,19 @@ public class ShelfServiceImpl implements ShelfService {
 
     @Override
     public ReturnResponse delete(Long id) {
-        return null;
+        Integer currentQuantity = compartmentService.getCurrentQuantityByShelfId(id);
+        if(currentQuantity == null || currentQuantity == 0){
+            Shelf shelf = repo.findById(id).orElseThrow(()-> new UserNotFoundException("Cái này là không tìm thấy shelf "));
+            shelf.setDeletedFlag(true);
+            repo.save(shelf);
+            return ReturnResponse.builder()
+                    .statusCode(HttpStatus.OK)
+                    .data("Delete shelf successfully")
+                    .build();
+        }
+        return ReturnResponse.builder()
+                .statusCode(HttpStatus.BAD_REQUEST)
+                .data("Can not delete this shelf")
+                .build();
     }
 }

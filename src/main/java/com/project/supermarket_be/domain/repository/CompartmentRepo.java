@@ -14,4 +14,10 @@ public interface CompartmentRepo extends JpaRepository<Compartment, Long> {
     List<Object[]> getCurrentQuantityOfCompartmentByTierId(@Param("tierId") Long tierId);
     @Query(value = "select e.id, e.product_id, e.compartment_code, e.current_quantity from Compartment e where e.tier_id = :tierId and deleted_flag = false", nativeQuery = true)
     List<Object[]> getAllCompartmentByTierId(@Param("tierId") Long tierId);
+
+    @Query(value = "select sum(current_quantity) as current_quantity_sum " +
+            "from compartment " +
+            "inner join tier on tier.id = compartment.tier_id " +
+            "inner join shelf on tier.shelf_id = shelf.id where shelf.id = :shelfId", nativeQuery = true)
+    Integer getCurrentQuantityByShelfId(@Param("shelfId") Long shelfId);
 }

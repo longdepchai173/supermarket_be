@@ -71,4 +71,9 @@ public class CompartmentServiceImpl implements CompartmentService {
 
         return ((float) count / compartments.size()) * 100;
     }
+
+    public Integer getCurrentQuantityByShelfId(Long shelfId){
+        Integer quantity = repo.getCurrentQuantityByShelfId(shelfId);
+        return quantity;
+    }
 }

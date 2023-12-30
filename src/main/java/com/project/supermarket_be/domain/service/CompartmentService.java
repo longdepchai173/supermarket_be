@@ -8,4 +8,5 @@ import java.util.List;
 public interface CompartmentService {
     ReturnResponse getAllCompartmentByTierId(String tierId);
     float calculateInUse(Long tierId);
+    Integer getCurrentQuantityByShelfId(Long shelfId);
 }
