@@ -30,6 +30,7 @@ public class TierServiceImpl implements TierService {
             float inUse = compartmentService.calculateInUse(tier.getId());
             responses.add(TierInfoResponse.builder()
                     .tierCode(tier.getTierCode())
+                    .tierId(tier.getId())
                     .shelfId(convShelfId)
                     .inUse(inUse)
                     .build());

@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class TierInfoResponse {
     private Long shelfId;
+    private Long tierId;
     private String tierCode;
     private float inUse;
 }
