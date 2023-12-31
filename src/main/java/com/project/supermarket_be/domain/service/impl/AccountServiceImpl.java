@@ -54,10 +54,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public ReturnResponse getAllAccountPaging(GetAllAccountParam param) {
         List<Account> result = new ArrayList<>();
-        if(param.getSearch().isEmpty()){
-            result = accountRepo.findAll();
-        }else
-            result = accountRepo.getAllAccountByCondition(param.getSearch(), param.getStatus());
+        result = accountRepo.getAllAccountByCondition(param.getSearch(), param.getStatus());
 
         return ReturnResponse.builder()
                 .statusCode(HttpStatus.OK).data(result)
