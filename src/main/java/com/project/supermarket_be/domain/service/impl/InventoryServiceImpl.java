@@ -1,12 +1,15 @@
 package com.project.supermarket_be.domain.service.impl;
 
 import com.project.supermarket_be.api.dto.request.CreateInventoryRequest;
+import com.project.supermarket_be.api.dto.request.ProductOnInventoryRequest;
 import com.project.supermarket_be.api.dto.response.ProductInventoryDto;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.api.exception.customerException.CanNotUploadImage;
 import com.project.supermarket_be.domain.model.Account;
 import com.project.supermarket_be.domain.model.Inventory;
+import com.project.supermarket_be.domain.model.ProductInventory;
 import com.project.supermarket_be.domain.repository.InventoryRepo;
+import com.project.supermarket_be.domain.repository.ProductInventoryRepo;
 import com.project.supermarket_be.domain.service.*;
 import lombok.AllArgsConstructor;
 
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +28,9 @@ public class InventoryServiceImpl implements InventoryService {
     private final InventoryRepo repo;
     private final AccountService accountService;
     private final UploadImgService uploadImgService;
+    private final ProductInventoryRepo productInventoryRepo;
     private final ProductInventoryService productInventoryService;
+
     @Override
     public ReturnResponse create(CreateInventoryRequest request) {
         String staffSignatureUrl = null;
@@ -55,21 +61,42 @@ public class InventoryServiceImpl implements InventoryService {
                 .deletedFlag(false)
                 .build();
         Inventory inventorySaved = repo.save(inventory);
-        try
-        {
-            productInventoryService.addListProduct(inventorySaved,request.getProducts());
-        }catch (Exception e){
-            repo.delete(inventorySaved);
-            return ReturnResponse.builder()
-                    .statusCode(HttpStatus.BAD_REQUEST)
-                    .data("loi roi huhu")
-                    .build();
-        }
 
+        boolean check = insetTo(inventorySaved, request.getProducts());
 
-        return ReturnResponse.builder()
+        return check ? ReturnResponse.builder()
                 .statusCode(HttpStatus.CREATED)
                 .data("create successfully")
+                .build() : ReturnResponse.builder()
+                .statusCode(HttpStatus.BAD_REQUEST)
+                .data("loi roi huhu")
                 .build();
+    }
+
+    private boolean insetTo(Inventory inventorySaved, List<ProductOnInventoryRequest> products) {
+        Integer inventoryId = Math.toIntExact(inventorySaved.getInventoryId());
+        List<ProductInventory> result = new ArrayList<>();
+        try {
+            for(int i = 0; i < products.size(); i++){
+               Integer productId = products.get(i).getProductId();
+               Integer quantity = products.get(i).getQuantity();
+               String status = products.get(i).getStatus();
+
+                ProductInventory productInventory = ProductInventory.builder()
+                        .productId(productId)
+                        .inventoryId(inventoryId)
+                        .quantity(quantity)
+                        .status(status)
+                        .build();
+                result.add(productInventory);
+
+//               repo.storeDataIn(productId, inventoryId, status, quantity);
+            }
+            productInventoryRepo.saveAll(result);
+            return true;
+        } catch (Exception e) {
+            repo.delete(inventorySaved);
+            return false;
+        }
     }
 }

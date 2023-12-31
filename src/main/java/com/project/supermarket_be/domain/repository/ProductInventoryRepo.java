@@ -12,7 +12,6 @@ public interface ProductInventoryRepo extends JpaRepository<ProductInventory, Lo
     @Modifying
     @Query(value = "INSERT INTO product_inventory (product_id, inventory_id, status, quantity) " +
             "VALUES (:productId, :inventoryId, :status, :quantity)", nativeQuery = true)
-    void storeData(@Param("productId")Integer productId,@Param("inventoryId")Integer inventoryId,
-                    @Param("status")String status, @Param("quantity")Integer quantity);
-
+    void storeData(@Param("productId")Integer productId, @Param("inventoryId")Integer inventoryId,
+                     @Param("status")String status, @Param("quantity")Integer quantity);
 }

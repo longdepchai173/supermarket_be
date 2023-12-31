@@ -1,6 +1,5 @@
 package com.project.supermarket_be.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,29 +13,27 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "PRODUCT_INVENTORY")
 public class ProductInventory {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long product_inventory_id;
+    @Column(name = "product_inventory_id")
+    private Long productInventoryId;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product;
+    @Column(name = "product_id")
+    private Integer productId;
 
+    @Column(name = "inventory_id")
+    private Integer inventoryId;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id")
-    private Inventory inventory;
-
-    @Column(name = "status", length = 50)
+    @Column(name = "status")
     private String status;
 
     @Column(name = "quantity")
-    private int quantity;
+    private Integer quantity;
+
+    @Column(name = "note")
+    private String note;
 
     @Column(name = "deleted_flag")
-    @JsonIgnore
     private boolean deletedFlag;
+
 }
