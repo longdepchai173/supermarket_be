@@ -73,6 +73,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product getProductById(Long productId) {
+        return repo.findById(productId).orElseThrow(()->new ProductCannotFound(String.valueOf(productId)));
+    }
+
+    @Override
     public ProductIdCategoryNameDto getNameAndCategoryId(Long productId) {
         List<Object[]> results = repo.getProductName(productId);
         if(results.isEmpty()){

@@ -12,6 +12,7 @@ import com.project.supermarket_be.domain.model.WarehouseInvoice;
 public interface ProductService {
     Product createProduct(ProductRequest product, Provider provider, WarehouseInvoice invoice);
     ReturnResponse getProductById(String productId);
+    Product getProductById(Long productId);
     ProductIdCategoryNameDto getNameAndCategoryId(Long productId);
 
     ReturnResponse getAllProductPaging(GetAllProductParam param);

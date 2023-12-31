@@ -1,4 +1,4 @@
-package com.project.supermarket_be.api.dto.parameter;
+package com.project.supermarket_be.api.dto.request;
 
 import lombok.Builder;
 import lombok.Data;
@@ -10,16 +10,9 @@ import java.util.List;
 @Builder
 public class CreateInventoryRequest {
     private Integer createByStaff;
-    private Date inventoryTime;
+    private String inventoryTime;
     private String inventoryCode;
     private String staffSignature;
     private String note;
-    private List<ProductOnInventory> products;
-    @Data
-    @Builder
-    static class ProductOnInventory {
-        private Integer productId;
-        private Integer quantity;
-        private Integer status;
-    }
+    private List<ProductOnInventoryRequest> products;
 }

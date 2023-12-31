@@ -8,6 +8,6 @@ import lombok.Data;
 public class ProductInventoryDto {
     Long productId;
     Long inventoryId;
-    Integer status;
+    String status;
     Integer quantity;
 }

@@ -23,7 +23,7 @@ public class Inventory {
 
     @ManyToOne
     @JoinColumn(name = "create_by_staff", referencedColumnName = "id")
-    private Account createdByStaff;
+    private Account createByStaff;
 
     @Column(name = "inventory_time")
     private Date inventoryTime;
