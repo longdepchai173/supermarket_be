@@ -23,7 +23,6 @@ public interface CategoryRepo extends JpaRepository<Category, Long> {
             "    product p ON c.category_id = p.category_id\n" +
             "WHERE \n" +
             "\tc.deleted_flag = false\t-- chỉ lấy category chưa bị xóa\n" +
-            "\tAND p.input_quantity - p.sold_quantity >= 0\t-- chỉ lấy product còn số lượng trong siêu thị\n" +
             "GROUP BY\n" +
             "    c.category_id, c.name;", nativeQuery = true)
     List<Object[]> getAllCategoryGroupByCondition();

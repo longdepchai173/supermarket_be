@@ -77,7 +77,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(result -> CategoryResponse.builder()
                         .categoryId((Integer) result[0])
                         .name((String) result[1])
-                        .productQnt((Long) result[2])
+                        .productQnt( result[2] == null ? 0 : (Long) result[2])
                         .build())
                 .collect(Collectors.toList());
         return ReturnResponse.builder().statusCode(HttpStatus.OK).data(responses).build();
