@@ -7,7 +7,8 @@ import lombok.Data;
 @Data
 @Builder
 public class ShelfResponse {
-    private Integer id;
+    private Integer shelfId;
     private Integer categoryId;
     private String shelfCode;
+    private float inUse;
 }

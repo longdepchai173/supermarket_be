@@ -4,6 +4,7 @@ import com.project.supermarket_be.api.dto.request.CreateShelfRequest;
 import com.project.supermarket_be.api.dto.request.ShelfRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.api.dto.response.ShelfResponse;
+import com.project.supermarket_be.api.dto.response.TierCountInUse;
 import com.project.supermarket_be.api.exception.customerException.UserIDNotFoundException;
 import com.project.supermarket_be.api.exception.customerException.UserNotFoundException;
 import com.project.supermarket_be.domain.model.Category;
@@ -16,7 +17,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.lang.Float.NaN;
 
 @Service
 @AllArgsConstructor
@@ -24,12 +29,39 @@ public class ShelfServiceImpl implements ShelfService {
     private final ShelfRepo repo;
     private final CategoryService categoryService;
     private final CompartmentService compartmentService;
+
     @Override
     public ReturnResponse getAll() {
         List<ShelfResponse> shelves = repo.getAll();
+        List<ShelfResponse> toReturn = new ArrayList<>();
+        for (ShelfResponse response : shelves) {
+            Integer shelfId = response.getShelfId();
+            List<Object[]> calculateInUse = repo.calculateInUse(shelfId);
+            List<TierCountInUse> toCalculate = calculateInUse.stream()
+                    .map(result -> TierCountInUse.builder()
+                            .tierId((Integer) result[0])
+                            .count((Long) result[1])
+                            .build()
+                    ).collect(Collectors.toList());
+            Integer count = 0;
+            for (TierCountInUse inUse : toCalculate) {
+                if (inUse.getCount() != 0 && inUse.getCount() != null) {
+                    count++;
+                }
+            }
+            float inUseValue;
+            if (count == 0) {
+                inUseValue = 0;
+            } else
+                 inUseValue = ((float) count / (float) toCalculate.size()) * 100;
+
+            response.setInUse(inUseValue);
+            toReturn.add(response);
+        }
+
         return ReturnResponse.builder()
                 .statusCode(HttpStatus.OK)
-                .data(shelves)
+                .data(toReturn)
                 .build();
     }
 
@@ -47,7 +79,7 @@ public class ShelfServiceImpl implements ShelfService {
         ShelfResponse response = ShelfResponse.builder()
                 .categoryId(request.getCategoryId())
                 .shelfCode(request.getShelfCode())
-                .id(Math.toIntExact(shelfSaved.getId()))
+                .shelfId(Math.toIntExact(shelfSaved.getId()))
                 .build();
         return ReturnResponse.builder()
                 .statusCode(HttpStatus.CREATED)
@@ -58,7 +90,7 @@ public class ShelfServiceImpl implements ShelfService {
     @Override
     public ReturnResponse update(ShelfRequest request) {
         Category category = categoryService.findById(Long.valueOf(request.getCategoryId()));
-        Shelf shelf = repo.findById(Long.valueOf(request.getId())).orElseThrow(()->new UserIDNotFoundException(request.getShelfCode()));
+        Shelf shelf = repo.findById(Long.valueOf(request.getId())).orElseThrow(() -> new UserIDNotFoundException(request.getShelfCode()));
         shelf.setCategory(category);
         shelf.setShelfCode(request.getShelfCode());
 
@@ -72,8 +104,8 @@ public class ShelfServiceImpl implements ShelfService {
     @Override
     public ReturnResponse delete(Long id) {
         Integer currentQuantity = compartmentService.getCurrentQuantityByShelfId(id);
-        if(currentQuantity == null || currentQuantity == 0){
-            Shelf shelf = repo.findById(id).orElseThrow(()-> new UserNotFoundException("Cái này là không tìm thấy shelf "));
+        if (currentQuantity == null || currentQuantity == 0) {
+            Shelf shelf = repo.findById(id).orElseThrow(() -> new UserNotFoundException("Cái này là không tìm thấy shelf "));
             shelf.setDeletedFlag(true);
             repo.save(shelf);
             return ReturnResponse.builder()
