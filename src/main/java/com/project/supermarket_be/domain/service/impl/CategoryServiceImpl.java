@@ -1,6 +1,8 @@
 package com.project.supermarket_be.domain.service.impl;
 
+import com.project.supermarket_be.api.dto.mapping_output.GetAllProductByConditionDto;
 import com.project.supermarket_be.api.dto.request.CategoryRequest;
+import com.project.supermarket_be.api.dto.response.CategoryResponse;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.api.exception.customerException.CategoryNotFound;
 import com.project.supermarket_be.domain.model.Category;
@@ -10,7 +12,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -67,8 +72,15 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ReturnResponse getAll() {
-        List<Category> categoryList = repo.getAllCategory();
-        return ReturnResponse.builder().statusCode(HttpStatus.OK).data(categoryList).build();
+        List<Object[]> results = repo.getAllCategoryGroupByCondition();
+        List<CategoryResponse> responses =  results.stream()
+                .map(result -> CategoryResponse.builder()
+                        .categoryId((Integer) result[0])
+                        .name((String) result[1])
+                        .productQnt((Long) result[2])
+                        .build())
+                .collect(Collectors.toList());
+        return ReturnResponse.builder().statusCode(HttpStatus.OK).data(responses).build();
     }
 
     @Override
