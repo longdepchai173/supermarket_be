@@ -30,9 +30,10 @@ public class InventoryServiceImpl implements InventoryService {
     private final UploadImgService uploadImgService;
     private final ProductInventoryRepo productInventoryRepo;
     private final ProductInventoryService productInventoryService;
+    private final JwtService jwtService;
 
     @Override
-    public ReturnResponse create(CreateInventoryRequest request) {
+    public ReturnResponse create(CreateInventoryRequest request, String token) {
         String staffSignatureUrl = null;
         try {
             staffSignatureUrl = uploadImgService.uploadBase64Image(request.getStaffSignature());
@@ -51,7 +52,9 @@ public class InventoryServiceImpl implements InventoryService {
             e.printStackTrace(); // Handle the exception appropriately
         }
 
-        Account account = accountService.getAccountById(Long.valueOf(request.getCreateByStaff()));
+        String accessToken = token.substring(7);
+        String email = jwtService.extractUsername(accessToken);
+        Account account = accountService.getAccountByEmail(email);
         Inventory inventory = Inventory.builder()
                 .createByStaff(account)
                 .inventoryCode(request.getInventoryCode())

@@ -123,4 +123,10 @@ public class AccountServiceImpl implements AccountService {
                 .build();
     }
 
+    @Override
+    public Account getAccountByEmail(String email) {
+        Account account = accountRepo.findByEmail(email);
+        return account;
+    }
+
 }
