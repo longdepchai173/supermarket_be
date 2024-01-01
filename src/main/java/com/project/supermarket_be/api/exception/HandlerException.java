@@ -47,6 +47,12 @@ public class HandlerException {
     public ErrorResponse handlerUserNotFoundException(UserNotFoundException ex){
         return new ErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
+
+    @ExceptionHandler(ShelfCodeAlreadyExists.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleShelfCodeAlreadyExists(ShelfCodeAlreadyExists ex){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
     @ExceptionHandler(ProductCannotFound.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handlerProductNotFoundException(ProductCannotFound ex){

@@ -5,6 +5,7 @@ import com.project.supermarket_be.api.dto.request.ShelfRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.api.dto.response.ShelfResponse;
 import com.project.supermarket_be.api.dto.response.TierCountInUse;
+import com.project.supermarket_be.api.exception.customerException.ShelfCodeAlreadyExists;
 import com.project.supermarket_be.api.exception.customerException.UserIDNotFoundException;
 import com.project.supermarket_be.api.exception.customerException.UserNotFoundException;
 import com.project.supermarket_be.domain.model.Category;
@@ -13,6 +14,7 @@ import com.project.supermarket_be.domain.repository.ShelfRepo;
 import com.project.supermarket_be.domain.service.CategoryService;
 import com.project.supermarket_be.domain.service.CompartmentService;
 import com.project.supermarket_be.domain.service.ShelfService;
+import com.project.supermarket_be.domain.service.TierService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ public class ShelfServiceImpl implements ShelfService {
     private final ShelfRepo repo;
     private final CategoryService categoryService;
     private final CompartmentService compartmentService;
+    private final TierService tierService;
 
     @Override
     public ReturnResponse getAll() {
@@ -69,6 +72,10 @@ public class ShelfServiceImpl implements ShelfService {
     public ReturnResponse create(CreateShelfRequest request) {
 
         Category category = categoryService.findById(Long.valueOf(request.getCategoryId()));
+        List<Object[]> checkExists = repo.findByShelfCode(request.getShelfCode());
+        if (checkExists.size() != 0){
+            throw new ShelfCodeAlreadyExists(request.getShelfCode());
+        }
 
         Shelf shelf = Shelf.builder()
                 .shelfCode(request.getShelfCode())
@@ -76,14 +83,14 @@ public class ShelfServiceImpl implements ShelfService {
                 .deletedFlag(false)
                 .build();
         Shelf shelfSaved = repo.save(shelf);
-        ShelfResponse response = ShelfResponse.builder()
-                .categoryId(request.getCategoryId())
-                .shelfCode(request.getShelfCode())
-                .shelfId(Math.toIntExact(shelfSaved.getId()))
-                .build();
+        try{
+            tierService.createTierByShelfId(shelf,request.getTiers());
+        }catch (Exception e){
+            repo.delete(shelfSaved);
+        }
         return ReturnResponse.builder()
                 .statusCode(HttpStatus.CREATED)
-                .data(response)
+                .data("create shelf successfully")
                 .build();
     }
 

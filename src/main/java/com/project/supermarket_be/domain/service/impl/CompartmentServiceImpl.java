@@ -6,6 +6,7 @@ import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.api.exception.customerException.UserIDNotFoundException;
 import com.project.supermarket_be.api.exception.customerException.UserNotFoundException;
 import com.project.supermarket_be.domain.model.Compartment;
+import com.project.supermarket_be.domain.model.Tier;
 import com.project.supermarket_be.domain.repository.CompartmentRepo;
 import com.project.supermarket_be.domain.service.CategoryService;
 import com.project.supermarket_be.domain.service.CompartmentService;
@@ -100,6 +101,20 @@ public class CompartmentServiceImpl implements CompartmentService {
                     .statusCode(HttpStatus.BAD_REQUEST)
                     .data("Can not clear compartment")
                     .build();
+        }
+    }
+
+    @Override
+    public void createCompartmentList(Tier tier, Integer numberOfCompartment) {
+        for(int i = 0; i < numberOfCompartment; i++){
+            String compartmentCode = "CC".concat(i < 10 ? "0".concat(String.valueOf(i)): String.valueOf(i));
+            Compartment compartment = Compartment.builder()
+                    .compartmentCode(compartmentCode)
+                    .product(null)
+                    .currentQuantity(0)
+                    .tier(tier)
+                    .deletedFlag(false).build();
+            repo.save(compartment);
         }
     }
 }

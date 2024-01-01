@@ -33,4 +33,6 @@ public interface ShelfRepo extends JpaRepository<Shelf, Long> {
             "\t\t   where shelf.id = :shelfId\n" +
             "\t\t   group by tier.id", nativeQuery = true)
     List<Object[]> calculateInUse(@Param("shelfId") Integer shelfId);
+    @Query(value = "select * from shelf where shelf_code = :shelfCode", nativeQuery = true)
+    List<Object[]> findByShelfCode(@Param("shelfCode") String shelfCode);
 }
