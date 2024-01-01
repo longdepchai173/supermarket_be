@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +24,14 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
             "category.name," +
             "batch_code," +
             "input_quantity," +
-            "sold_quantity\n" +
+            "sold_quantity, " +
+            "input_price, " +
+            "shelf_qnt, "+
+            "shelf_arrange_qnt, "+
+            "is_disable, "+
+            "disable_date, "+
+            "expired_date, "+
+            "manufacture_date\n"+
             "FROM product " +
             "INNER JOIN category ON category.category_id = product.category_id " +
             "INNER JOIN warehouse_invoice ON warehouse_invoice.id = product.invoice_id " +
@@ -44,8 +52,15 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
                         (Date) result[2],         // receiving_time
                         (String) result[3],       // category_name
                         (String) result[4],       // batch_code
-                        (int) result[5],          // input_quantity
-                        (int) result[6]           // sold_quantity
+                        (Integer) result[5],          // input_quantity
+                        (Integer) result[6] ,         // sold_quantity
+                        (BigDecimal) result[7],        //input_price
+                        (Integer) result[8],           //shelf_qnt
+                        (Integer) result[9],//shelf_arrange_qnt
+                        (Boolean) result[10],//is_disable
+                        (Date) result[11],//disable_date
+                        (Date) result[12],//expired_date
+                        (Date) result[13]//manufacture_date
                 ))
                 .collect(Collectors.toList());
     }
