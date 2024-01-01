@@ -32,12 +32,14 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
             "disable_date, "+
             "expired_date, " +
             "manufacture_date,\n"+
-            "product_name "+
+            "product_name, "+
+            "product_code\n" +
             "FROM product " +
             "INNER JOIN category ON category.category_id = product.category_id " +
             "INNER JOIN warehouse_invoice ON warehouse_invoice.id = product.invoice_id " +
             "WHERE (category.name LIKE %:search% " +
             "OR warehouse_invoice.supply_code LIKE %:search% " +
+            "OR product_name LIKE %:search% " +
             "OR product_code LIKE %:search% " +
             "OR batch_code LIKE %:search%) " +
             "AND warehouse_invoice.receiving_time >= TO_TIMESTAMP(:from, 'DD-MM-YYYY HH24:MI:SS') " +
@@ -63,7 +65,8 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
                         (Date) result[12],//expired_date
                         (Date) result[13],//manufacture_date
                         (String) result[14],
-                        ((Integer) result[5] - (Integer) result[6] - (Integer) result[8])
+                        ((Integer) result[5] - (Integer) result[6] - (Integer) result[8]),
+                        (String) result[15]
                 ))
                 .collect(Collectors.toList());
     }

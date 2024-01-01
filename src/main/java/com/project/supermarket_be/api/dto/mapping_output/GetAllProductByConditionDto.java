@@ -32,4 +32,5 @@ public class GetAllProductByConditionDto {
         //manufacture_date
         private String productName;
         private Integer quantity;
+        String productCode;
 }
