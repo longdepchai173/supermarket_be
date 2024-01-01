@@ -17,4 +17,6 @@ public interface AccountService {
     Account getAccountById(Long id);
     ReturnResponse update(UpdateAccountRequest request);
     Account getAccountByEmail(String email);
+
+    ReturnResponse unblockAccountById(String accountId);
 }

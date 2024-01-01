@@ -48,6 +48,11 @@ public class AccountController {
         ReturnResponse response = accountService.blockAccountById(accountId);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
+    @PostMapping("/unblock/{accountId}")
+    public ResponseEntity<ReturnResponse> unblockStaffAccount(@PathVariable String accountId){
+        ReturnResponse response = accountService.unblockAccountById(accountId);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
     @PutMapping("/update/{accountId}")
     public ResponseEntity<ReturnResponse> updateAccountById(@PathVariable String accountId,
                                                             @RequestBody UpdateAccountRequest request){
