@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/inventories")
@@ -16,6 +18,15 @@ public class InventoryController {
     public ResponseEntity<ReturnResponse> create(@RequestBody CreateInventoryRequest request, @RequestHeader("Authorization") String token){
 
         ReturnResponse response = service.create(request, token);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<ReturnResponse> getAll(@RequestParam(name = "search", defaultValue = "") String search,
+                                                 @RequestParam(name = "from", defaultValue = "0001-01-01") String from,
+                                                 @RequestParam(name = "to", defaultValue = "2100-01-01") String to){
+
+        ReturnResponse response = service.getAll(search, from, to);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 }

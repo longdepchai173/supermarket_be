@@ -2,6 +2,7 @@ package com.project.supermarket_be.domain.service.impl;
 
 import com.project.supermarket_be.api.dto.request.CreateInventoryRequest;
 import com.project.supermarket_be.api.dto.request.ProductOnInventoryRequest;
+import com.project.supermarket_be.api.dto.response.InventoryResponse;
 import com.project.supermarket_be.api.dto.response.ProductInventoryDto;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.api.exception.customerException.CanNotUploadImage;
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -42,12 +44,11 @@ public class InventoryServiceImpl implements InventoryService {
         }
 
         SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
-        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date covInventoryTime = new Date();
 
         try {
             Date date = inputFormat.parse(request.getInventoryTime());
-            covInventoryTime = outputFormat.parse(request.getInventoryTime());
+            covInventoryTime = inputFormat.parse(request.getInventoryTime());
         } catch (ParseException e) {
             e.printStackTrace(); // Handle the exception appropriately
         }
@@ -80,10 +81,10 @@ public class InventoryServiceImpl implements InventoryService {
         Integer inventoryId = Math.toIntExact(inventorySaved.getInventoryId());
         List<ProductInventory> result = new ArrayList<>();
         try {
-            for(int i = 0; i < products.size(); i++){
-               Integer productId = products.get(i).getProductId();
-               Integer quantity = products.get(i).getQuantity();
-               String status = products.get(i).getStatus();
+            for (int i = 0; i < products.size(); i++) {
+                Integer productId = products.get(i).getProductId();
+                Integer quantity = products.get(i).getQuantity();
+                String status = products.get(i).getStatus();
 
                 ProductInventory productInventory = ProductInventory.builder()
                         .productId(productId)
@@ -101,5 +102,24 @@ public class InventoryServiceImpl implements InventoryService {
             repo.delete(inventorySaved);
             return false;
         }
+    }
+
+    public ReturnResponse getAll(String search, String from, String to) {
+
+
+        List<Object[]> resultQuery = repo.getAll(search, from, to);
+        List<InventoryResponse> responses = resultQuery.stream()
+                .map(result -> InventoryResponse.builder()
+                        .inventoryId((Integer) result[0])
+                        .inventoryCode((String) result[1])
+                        .inventoryTime((Date) result[2])
+                        .productName((String) result[3])
+                        .productCode((String) result[4])
+                        .batchCode((String) result[5])
+                        .build()).collect(Collectors.toList());
+        return ReturnResponse.builder()
+                .statusCode(HttpStatus.OK)
+                .data(responses)
+                .build();
     }
 }
