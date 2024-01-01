@@ -59,12 +59,11 @@ public class ShelfServiceImpl implements ShelfService {
                  inUseValue = ((float) count / (float) toCalculate.size()) * 100;
 
             response.setInUse(inUseValue);
-            toReturn.add(response);
         }
 
         return ReturnResponse.builder()
                 .statusCode(HttpStatus.OK)
-                .data(toReturn)
+                .data(shelves)
                 .build();
     }
 

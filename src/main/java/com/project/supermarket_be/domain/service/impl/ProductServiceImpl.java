@@ -99,6 +99,10 @@ public class ProductServiceImpl implements ProductService {
         String search = param.getSearch();
         String from = param.getFrom();
         String to = param.getTo();
+        if(from.equals("") || to.equals("")){
+            from = "01-01-0001";
+            to = "01-01-2100";
+        }
         List<GetAllProductByConditionDto> productByCategoryName = repo.getProductsInfoByCondition(search, from, to);
 
         return ReturnResponse.builder()

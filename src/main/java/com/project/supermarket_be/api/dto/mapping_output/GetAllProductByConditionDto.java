@@ -30,4 +30,6 @@ public class GetAllProductByConditionDto {
         //expired_date
         private Date manufactureDate;
         //manufacture_date
+        private String productName;
+        private Integer quantity;
 }

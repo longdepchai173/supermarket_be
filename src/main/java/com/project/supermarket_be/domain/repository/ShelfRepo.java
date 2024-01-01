@@ -11,10 +11,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 @Repository
 public interface ShelfRepo extends JpaRepository<Shelf, Long> {
-    @Query(value = "Select tier.id, category_id, shelf_code \n" +
-            "            from shelf\n" +
-            "\t\t\tleft join tier on tier.shelf_id = shelf.id\n" +
-            "           where shelf.deleted_flag = false", nativeQuery = true)
+    @Query(value = "Select shelf.id, category_id, shelf_code \n" +
+            "from shelf\n" +
+            "where shelf.deleted_flag = false", nativeQuery = true)
     List<Object[]> getAllRepo();
     default List<ShelfResponse> getAll(){
         List<Object[]> results = getAllRepo();

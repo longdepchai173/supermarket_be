@@ -25,27 +25,27 @@ public class ProductController {
             @RequestParam(name = "page-number", defaultValue = "0") int pageNumber,
             @RequestParam(name = "limit", defaultValue = "100") int limit,
             @RequestParam(name = "search", defaultValue = "") String search,
-            @RequestParam(name = "from") String from,
-            @RequestParam(name = "to") String to) {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
-        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String fromDate = null;
-        String toDate = null;
-        try {
-            Date date = inputFormat.parse(from);
-            fromDate = outputFormat.format(date);
-            date = inputFormat.parse(to);
-            toDate = outputFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace(); // Handle the exception appropriately
-        }
+            @RequestParam(name = "from", defaultValue = "") String from,
+            @RequestParam(name = "to", defaultValue = "") String to) {
+//        SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+//        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String fromDate = null;
+//        String toDate = null;
+//        try {
+//            Date date = inputFormat.parse(from);
+//            fromDate = outputFormat.format(date);
+//            date = inputFormat.parse(to);
+//            toDate = outputFormat.format(date);
+//        } catch (ParseException e) {
+//            e.printStackTrace(); // Handle the exception appropriately
+//        }
 
         GetAllProductParam param = GetAllProductParam.builder()
                 .pageNumber(pageNumber)
                 .search(search)
                 .limit(limit)
-                .from(fromDate)
-                .to(toDate)
+                .from(from)
+                .to(to)
                 .build();
         ReturnResponse response = productService.getAllProductPaging(param);
 

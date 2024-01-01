@@ -30,8 +30,9 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
             "shelf_arrange_qnt, "+
             "is_disable, "+
             "disable_date, "+
-            "expired_date, "+
-            "manufacture_date\n"+
+            "expired_date, " +
+            "manufacture_date,\n"+
+            "product_name "+
             "FROM product " +
             "INNER JOIN category ON category.category_id = product.category_id " +
             "INNER JOIN warehouse_invoice ON warehouse_invoice.id = product.invoice_id " +
@@ -39,8 +40,8 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
             "OR warehouse_invoice.supply_code LIKE %:search% " +
             "OR product_code LIKE %:search% " +
             "OR batch_code LIKE %:search%) " +
-            "AND warehouse_invoice.receiving_time >= TO_TIMESTAMP(:from, 'YYYY-MM-DD HH24:MI:SS') " +
-            "AND warehouse_invoice.receiving_time <= TO_TIMESTAMP(:to, 'YYYY-MM-DD HH24:MI:SS')", nativeQuery = true)
+            "AND warehouse_invoice.receiving_time >= TO_TIMESTAMP(:from, 'DD-MM-YYYY HH24:MI:SS') " +
+            "AND warehouse_invoice.receiving_time <= TO_TIMESTAMP(:to, 'DD-MM-YYYY HH24:MI:SS')", nativeQuery = true)
     List<Object[]> getProductsByCondition(@Param("search") String search, @Param("from")String from, @Param("to")String to);
 
     default List<GetAllProductByConditionDto> getProductsInfoByCondition(String search, String from, String to) {
@@ -60,7 +61,9 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
                         (Boolean) result[10],//is_disable
                         (Date) result[11],//disable_date
                         (Date) result[12],//expired_date
-                        (Date) result[13]//manufacture_date
+                        (Date) result[13],//manufacture_date
+                        (String) result[14],
+                        ((Integer) result[5] - (Integer) result[6] - (Integer) result[8])
                 ))
                 .collect(Collectors.toList());
     }
