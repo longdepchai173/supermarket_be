@@ -36,4 +36,11 @@ public class InventoryController {
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
+    @DeleteMapping("delete/{inventoryId}")
+    public ResponseEntity<ReturnResponse> deleteById(@PathVariable("inventoryId")Integer inventoryId){
+
+        ReturnResponse response = service.deleteById(inventoryId);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+
 }

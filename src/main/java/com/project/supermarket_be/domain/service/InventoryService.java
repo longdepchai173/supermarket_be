@@ -8,4 +8,6 @@ public interface InventoryService {
     ReturnResponse getAll(String search, String from, String to);
 
     ReturnResponse getById(Integer inventoryId);
+
+    ReturnResponse deleteById(Integer inventoryId);
 }

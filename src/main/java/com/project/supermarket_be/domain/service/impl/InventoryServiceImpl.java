@@ -126,6 +126,9 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public ReturnResponse getById(Integer inventoryId) {
         Inventory inventory = repo.findById(Long.valueOf(inventoryId)).orElseThrow(()->new InventoryCannotFound(String.valueOf(inventoryId)));
+        if(inventory.isDeletedFlag()){
+            throw  new InventoryCannotFound(String.valueOf(inventoryId));
+        }
         List<ProductInInventoryResponse> products = productInventoryService.getProductsById(inventory.getInventoryId());
         GetInventoryResponse response = GetInventoryResponse.builder()
                 .timeInventory(inventory.getInventoryTime())
@@ -137,6 +140,23 @@ public class InventoryServiceImpl implements InventoryService {
         return ReturnResponse.builder()
                 .statusCode(HttpStatus.OK)
                 .data(response)
+                .build();
+    }
+
+    @Override
+    public ReturnResponse deleteById(Integer inventoryId) {
+        Inventory inventory = repo.findById(Long.valueOf(inventoryId)).orElseThrow(()->new InventoryCannotFound(String.valueOf(inventoryId)));
+        if(inventory.isDeletedFlag()){
+            return ReturnResponse.builder()
+                    .statusCode(HttpStatus.BAD_REQUEST)
+                    .data("Inventory with id " + inventoryId + " already deleted")
+                    .build();
+        }
+        inventory.setDeletedFlag(true);
+        repo.save(inventory);
+        return ReturnResponse.builder()
+                .statusCode(HttpStatus.OK)
+                .data("Delete inventory with " + inventoryId + " successfully")
                 .build();
     }
 }
