@@ -115,6 +115,7 @@ public class AccountServiceImpl implements AccountService {
         account.setHasSupply(request.isHasSupply());
         account.setHasAudit(request.isHasAudit());
         account.setHasCategory(request.isHasCategory());
+        account.setHasStatistic(request.isHasStatistic());
 
         accountRepo.save(account);
         return ReturnResponse.builder()

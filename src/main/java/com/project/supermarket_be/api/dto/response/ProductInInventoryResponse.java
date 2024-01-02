@@ -7,12 +7,13 @@ import java.util.Date;
 
 @Data
 @Builder
-public class InventoryResponse {
-    Integer inventoryId;
-    String inventoryCode;
-    Date inventoryTime;
+public class ProductInInventoryResponse {
+    Integer productId;
+    String categoryName;
     String productName;
+    Integer quantity;
+    String status;
+    Date expiredDate;
     String productCode;
-    String batchCode;
-    String staffName;
 }
+

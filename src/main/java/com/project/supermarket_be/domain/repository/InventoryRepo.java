@@ -18,10 +18,11 @@ public interface InventoryRepo extends JpaRepository<Inventory, Long> {
     void storeDataIn(@Param("productId")Integer productId, @Param("inventoryId")Integer inventoryId,
                      @Param("status")String status, @Param("quantity")Integer quantity);
     @Query(value = "select i.inventory_id, inventory_code, inventory_time,\n" +
-            "p.product_name, p.product_code, p.batch_code\n" +
+            "p.product_name, p.product_code, p.batch_code, a.name\n" +
             "from inventory i\n" +
             "inner join product_inventory pi on pi.inventory_id = i.inventory_id\n" +
             "inner join product p on pi.product_id = p.id\n" +
+            "inner join account a on a.id = i.create_by_staff\n" +
             "left join category c on p.category_id = c.category_id\n" +
             "where (inventory_code like %:search%\n" +
             "or product_name like %:search%\n" +

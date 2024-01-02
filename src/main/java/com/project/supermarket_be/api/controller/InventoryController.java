@@ -29,4 +29,11 @@ public class InventoryController {
         ReturnResponse response = service.getAll(search, from, to);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
+    @GetMapping("/{inventoryId}")
+    public ResponseEntity<ReturnResponse> getById(@PathVariable("inventoryId")Integer inventoryId){
+
+        ReturnResponse response = service.getById(inventoryId);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+
 }

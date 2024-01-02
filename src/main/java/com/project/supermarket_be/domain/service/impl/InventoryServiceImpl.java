@@ -2,9 +2,7 @@ package com.project.supermarket_be.domain.service.impl;
 
 import com.project.supermarket_be.api.dto.request.CreateInventoryRequest;
 import com.project.supermarket_be.api.dto.request.ProductOnInventoryRequest;
-import com.project.supermarket_be.api.dto.response.InventoryResponse;
-import com.project.supermarket_be.api.dto.response.ProductInventoryDto;
-import com.project.supermarket_be.api.dto.response.ReturnResponse;
+import com.project.supermarket_be.api.dto.response.*;
 import com.project.supermarket_be.api.exception.customerException.CanNotUploadImage;
 import com.project.supermarket_be.domain.model.Account;
 import com.project.supermarket_be.domain.model.Inventory;
@@ -12,6 +10,7 @@ import com.project.supermarket_be.domain.model.ProductInventory;
 import com.project.supermarket_be.domain.repository.InventoryRepo;
 import com.project.supermarket_be.domain.repository.ProductInventoryRepo;
 import com.project.supermarket_be.domain.service.*;
+import com.project.supermarket_be.api.exception.customerException.InventoryCannotFound;
 import lombok.AllArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -116,10 +115,28 @@ public class InventoryServiceImpl implements InventoryService {
                         .productName((String) result[3])
                         .productCode((String) result[4])
                         .batchCode((String) result[5])
+                        .staffName((String) result[6])
                         .build()).collect(Collectors.toList());
         return ReturnResponse.builder()
                 .statusCode(HttpStatus.OK)
                 .data(responses)
+                .build();
+    }
+
+    @Override
+    public ReturnResponse getById(Integer inventoryId) {
+        Inventory inventory = repo.findById(Long.valueOf(inventoryId)).orElseThrow(()->new InventoryCannotFound(String.valueOf(inventoryId)));
+        List<ProductInInventoryResponse> products = productInventoryService.getProductsById(inventory.getInventoryId());
+        GetInventoryResponse response = GetInventoryResponse.builder()
+                .timeInventory(inventory.getInventoryTime())
+                .tnventoryCode(inventory.getInventoryCode())
+                .signatureOfClerk(inventory.getStaffSignature())
+                .nameOfClerk(inventory.getCreateByStaff().getName())
+                .products(products)
+                .build();
+        return ReturnResponse.builder()
+                .statusCode(HttpStatus.OK)
+                .data(response)
                 .build();
     }
 }

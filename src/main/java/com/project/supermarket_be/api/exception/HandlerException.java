@@ -65,6 +65,12 @@ public class HandlerException {
         return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
+    @ExceptionHandler(InventoryCannotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handlerCannotFoundInventory(InventoryCannotFound ex){
+        return new ErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
     @ExceptionHandler(CannotCreateProduct.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handlerCannotCreateProduct(CannotCreateProduct ex){

@@ -7,4 +7,5 @@ public interface InventoryService {
     ReturnResponse create(CreateInventoryRequest request, String token);
     ReturnResponse getAll(String search, String from, String to);
 
+    ReturnResponse getById(Integer inventoryId);
 }
