@@ -1,6 +1,7 @@
 package com.project.supermarket_be.domain.service;
 
 import com.project.supermarket_be.api.dto.parameter.GetAllProductParam;
+import com.project.supermarket_be.api.dto.request.AddProductToShelfRequest;
 import com.project.supermarket_be.api.dto.request.CreatesStockInvoice;
 import com.project.supermarket_be.api.dto.request.ProductRequest;
 import com.project.supermarket_be.api.dto.response.ProductIdCategoryNameDto;

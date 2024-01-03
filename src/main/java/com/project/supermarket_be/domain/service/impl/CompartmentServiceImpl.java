@@ -1,5 +1,6 @@
 package com.project.supermarket_be.domain.service.impl;
 
+import com.project.supermarket_be.api.dto.mapping_output.ProductIdCurrentQnt;
 import com.project.supermarket_be.api.dto.response.CompartmentResponse;
 import com.project.supermarket_be.api.dto.response.ProductIdCategoryNameDto;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
@@ -12,11 +13,13 @@ import com.project.supermarket_be.domain.service.CategoryService;
 import com.project.supermarket_be.domain.service.CompartmentService;
 import com.project.supermarket_be.domain.service.ProductService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -116,5 +119,25 @@ public class CompartmentServiceImpl implements CompartmentService {
                     .deletedFlag(false).build();
             repo.save(compartment);
         }
+    }
+
+    @Override
+    public ProductIdCurrentQnt getProductInCompartment(Integer tierId, String compartmentCode) {
+        ProductIdCurrentQnt toReturn = ProductIdCurrentQnt.builder()
+                .productId(-1)
+                .currentQuantity(0)
+                .build();
+        List<Object[]> check = new ArrayList<>();
+        try{
+            check = repo.checkCompartment(tierId,compartmentCode);
+        }catch (Exception e){
+            throw new UserIDNotFoundException(e.getMessage());
+        }
+
+        if(!check.isEmpty()){
+            toReturn.setProductId((Integer)check.get(0)[0]);
+            toReturn.setCurrentQuantity((Integer)check.get(0)[1]);
+        }
+        return toReturn;
     }
 }

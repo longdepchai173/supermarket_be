@@ -1,5 +1,6 @@
 package com.project.supermarket_be.domain.service;
 
+import com.project.supermarket_be.api.dto.mapping_output.ProductIdCurrentQnt;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.domain.model.Compartment;
 import com.project.supermarket_be.domain.model.Tier;
@@ -13,4 +14,6 @@ public interface CompartmentService {
     ReturnResponse clear(Long compartmentId);
 
     void createCompartmentList(Tier tier, Integer numberOfCompartment);
+
+    ProductIdCurrentQnt getProductInCompartment(Integer tierId, String compartmentCode);
 }

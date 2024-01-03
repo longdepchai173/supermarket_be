@@ -1,20 +1,22 @@
 package com.project.supermarket_be.domain.service.impl;
 
+import com.project.supermarket_be.api.dto.mapping_output.ProductIdCurrentQnt;
+import com.project.supermarket_be.api.dto.request.AddProductToShelfRequest;
 import com.project.supermarket_be.api.dto.request.CreateShelfRequest;
 import com.project.supermarket_be.api.dto.request.ShelfRequest;
+import com.project.supermarket_be.api.dto.response.AddProductTOShelfResponse;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.api.dto.response.ShelfResponse;
 import com.project.supermarket_be.api.dto.response.TierCountInUse;
+import com.project.supermarket_be.api.exception.customerException.CompartmentHasDiffProduct;
 import com.project.supermarket_be.api.exception.customerException.ShelfCodeAlreadyExists;
 import com.project.supermarket_be.api.exception.customerException.UserIDNotFoundException;
 import com.project.supermarket_be.api.exception.customerException.UserNotFoundException;
 import com.project.supermarket_be.domain.model.Category;
+import com.project.supermarket_be.domain.model.Product;
 import com.project.supermarket_be.domain.model.Shelf;
 import com.project.supermarket_be.domain.repository.ShelfRepo;
-import com.project.supermarket_be.domain.service.CategoryService;
-import com.project.supermarket_be.domain.service.CompartmentService;
-import com.project.supermarket_be.domain.service.ShelfService;
-import com.project.supermarket_be.domain.service.TierService;
+import com.project.supermarket_be.domain.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,8 @@ public class ShelfServiceImpl implements ShelfService {
     private final CategoryService categoryService;
     private final CompartmentService compartmentService;
     private final TierService tierService;
+    private final ProductService productService;
+    private List<AddProductTOShelfResponse> addProductTOShelfResponses;
 
     @Override
     public ReturnResponse getAll() {
@@ -56,7 +60,7 @@ public class ShelfServiceImpl implements ShelfService {
             if (count == 0) {
                 inUseValue = 0;
             } else
-                 inUseValue = ((float) count / (float) toCalculate.size()) * 100;
+                inUseValue = ((float) count / (float) toCalculate.size()) * 100;
 
             response.setInUse(inUseValue);
         }
@@ -72,7 +76,7 @@ public class ShelfServiceImpl implements ShelfService {
 
         Category category = categoryService.findById(Long.valueOf(request.getCategoryId()));
         List<Object[]> checkExists = repo.findByShelfCode(request.getShelfCode());
-        if (checkExists.size() != 0){
+        if (checkExists.size() != 0) {
             throw new ShelfCodeAlreadyExists(request.getShelfCode());
         }
 
@@ -82,9 +86,9 @@ public class ShelfServiceImpl implements ShelfService {
                 .deletedFlag(false)
                 .build();
         Shelf shelfSaved = repo.save(shelf);
-        try{
-            tierService.createTierByShelfId(shelf,request.getTiers());
-        }catch (Exception e){
+        try {
+            tierService.createTierByShelfId(shelf, request.getTiers());
+        } catch (Exception e) {
             repo.delete(shelfSaved);
         }
         return ReturnResponse.builder()
@@ -123,5 +127,43 @@ public class ShelfServiceImpl implements ShelfService {
                 .statusCode(HttpStatus.BAD_REQUEST)
                 .data("Can not delete this shelf")
                 .build();
+    }
+
+    @Override
+    public ReturnResponse addProduct(AddProductToShelfRequest request) {
+        Integer sumOfProductOnShelf = getSumOfProductOnShelf(request);
+        Product product = productService.getProductById(Long.valueOf(request.getProductId()));
+        Integer numberOfProductWantToAdd =
+                product.getShelfArrangeQuantity() * request.getCompartmentCodes().size() - sumOfProductOnShelf;
+        Integer productOnInventory = product.getInputQuantity() - product.getSoldQuantity() - product.getShelfQuantity();
+        if(productOnInventory >= numberOfProductWantToAdd){
+            Integer updateShelfQnt = product.getShelfQuantity() + numberOfProductWantToAdd;
+            product.setShelfQuantity(updateShelfQnt);
+            productService.updateShelfQuantity(updateShelfQnt, product.getId());
+        }else {
+            return ReturnResponse.builder()
+                    .statusCode(HttpStatus.BAD_REQUEST)
+                    .data("Product in inventory not enough to add")
+                    .build();
+        }
+        return ReturnResponse.builder()
+                .statusCode(HttpStatus.OK)
+                .data("add product to shelf successfully")
+                .build();
+    }
+
+    private Integer getSumOfProductOnShelf(AddProductToShelfRequest request) {
+        Integer productId = request.getProductId();
+        Integer tierId = request.getTierId();
+        Integer sumOfProductOnShelf = 0;
+        if (!request.getCompartmentCodes().isEmpty())
+            for (String compartmentCode : request.getCompartmentCodes()) {
+                ProductIdCurrentQnt productQnt = compartmentService.getProductInCompartment(tierId, compartmentCode);
+                if (productQnt.getProductId() == -1 || productQnt.getProductId() == productId) {
+                    sumOfProductOnShelf += productQnt.getCurrentQuantity();
+                } else throw new CompartmentHasDiffProduct(compartmentCode, String.valueOf(productId));
+
+            }
+        return sumOfProductOnShelf;
     }
 }

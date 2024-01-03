@@ -1,5 +1,6 @@
 package com.project.supermarket_be.api.controller;
 
+import com.project.supermarket_be.api.dto.request.AddProductToShelfRequest;
 import com.project.supermarket_be.api.dto.request.CreateShelfRequest;
 import com.project.supermarket_be.api.dto.request.ShelfRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
@@ -38,4 +39,9 @@ public class ShelfController {
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
+    @PostMapping("/add-products")
+    public ResponseEntity<ReturnResponse> addProduct(@RequestBody AddProductToShelfRequest request){
+        ReturnResponse response = service.addProduct(request);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
 }

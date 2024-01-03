@@ -87,6 +87,12 @@ public class HandlerException {
     public ErrorResponse handlerPasswordError(PasswordErrorException ex){
         return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
+
+    @ExceptionHandler(CompartmentHasDiffProduct.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleCompHasDifPro(CompartmentHasDiffProduct ex){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
     @ExceptionHandler(EmptyException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleEmptyException(EmptyException ex){

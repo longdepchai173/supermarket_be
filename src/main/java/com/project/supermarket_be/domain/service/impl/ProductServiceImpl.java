@@ -2,6 +2,7 @@ package com.project.supermarket_be.domain.service.impl;
 
 import com.project.supermarket_be.api.dto.mapping_output.GetAllProductByConditionDto;
 import com.project.supermarket_be.api.dto.parameter.GetAllProductParam;
+import com.project.supermarket_be.api.dto.request.AddProductToShelfRequest;
 import com.project.supermarket_be.api.dto.request.CreatesStockInvoice;
 import com.project.supermarket_be.api.dto.request.ProductRequest;
 import com.project.supermarket_be.api.dto.response.ProductIdCategoryNameDto;
@@ -15,9 +16,11 @@ import com.project.supermarket_be.domain.model.Provider;
 import com.project.supermarket_be.domain.model.WarehouseInvoice;
 import com.project.supermarket_be.domain.repository.ProductRepo;
 import com.project.supermarket_be.domain.service.CategoryService;
+import com.project.supermarket_be.domain.service.CompartmentService;
 import com.project.supermarket_be.domain.service.ProductService;
 import com.project.supermarket_be.domain.service.WarehouseService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -118,7 +121,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean updateShelfQuantity(Integer subQnt, Long productId) {
-        Product product = repo.findById(productId).orElseThrow(()-> new ProductCannotFound(String.valueOf(productId)));
+        Product product = repo.findById(productId).orElseThrow(
+                ()-> new ProductCannotFound(String.valueOf(productId)));
         product.setShelfQuantity(subQnt);
         try{
             repo.save(product);
@@ -127,5 +131,6 @@ public class ProductServiceImpl implements ProductService {
             return false;
         }
     }
+
 
 }

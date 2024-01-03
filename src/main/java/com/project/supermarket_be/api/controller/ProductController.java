@@ -27,18 +27,6 @@ public class ProductController {
             @RequestParam(name = "search", defaultValue = "") String search,
             @RequestParam(name = "from", defaultValue = "") String from,
             @RequestParam(name = "to", defaultValue = "") String to) {
-//        SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
-//        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        String fromDate = null;
-//        String toDate = null;
-//        try {
-//            Date date = inputFormat.parse(from);
-//            fromDate = outputFormat.format(date);
-//            date = inputFormat.parse(to);
-//            toDate = outputFormat.format(date);
-//        } catch (ParseException e) {
-//            e.printStackTrace(); // Handle the exception appropriately
-//        }
 
         GetAllProductParam param = GetAllProductParam.builder()
                 .pageNumber(pageNumber)
@@ -58,8 +46,4 @@ public class ProductController {
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-//    @PostMapping("/add-to-shelf")
-//    public ResponseEntity<ReturnResponse> addProductToShelf(@RequestBody AddProductToShelfRequest request){
-////        ReturnResponse response = productService.
-//    }
 }
