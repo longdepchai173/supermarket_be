@@ -18,17 +18,11 @@ public interface InventoryRepo extends JpaRepository<Inventory, Long> {
     void storeDataIn(@Param("productId")Integer productId, @Param("inventoryId")Integer inventoryId,
                      @Param("status")String status, @Param("quantity")Integer quantity);
     @Query(value = "select i.inventory_id, inventory_code, inventory_time,\n" +
-            "p.product_name, p.product_code, p.batch_code, a.name\n" +
+            "a.name\n" +
             "from inventory i\n" +
-            "inner join product_inventory pi on pi.inventory_id = i.inventory_id\n" +
-            "inner join product p on pi.product_id = p.id\n" +
             "inner join account a on a.id = i.create_by_staff\n" +
-            "left join category c on p.category_id = c.category_id\n" +
             "where (inventory_code like %:search%\n" +
-            "or product_name like %:search%\n" +
-            "or c.name like %:search%\n" +
-            "or p.product_code like %:search%\n" +
-            "or p.batch_code like %:search%)\n" +
+            "or a.name like %:search%)\n" +
             "and i.deleted_flag = false\n" +
             "and i.inventory_time >= TO_TIMESTAMP(:from, 'YYYY-MM-DD HH24:MI:SS')\n" +
             "and i.inventory_time <= TO_TIMESTAMP(:to, 'YYYY-MM-DD HH24:MI:SS')" , nativeQuery = true)
