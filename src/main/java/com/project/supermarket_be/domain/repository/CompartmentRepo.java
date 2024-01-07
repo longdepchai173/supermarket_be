@@ -12,7 +12,17 @@ import java.util.List;
 public interface CompartmentRepo extends JpaRepository<Compartment, Long> {
     @Query(value = "select e.id, e.current_quantity from Compartment e where e.tier_id = :tierId and deleted_flag = false", nativeQuery = true)
     List<Object[]> getCurrentQuantityOfCompartmentByTierId(@Param("tierId") Long tierId);
-    @Query(value = "select e.id, e.product_id, e.compartment_code, e.current_quantity from Compartment e where e.tier_id = :tierId and deleted_flag = false", nativeQuery = true)
+    @Query(value = "select\n" +
+            "\t\t\te.id, e.product_id, \n" +
+            "            e.compartment_code, \n" +
+            "            e.current_quantity, \n" +
+            "            p.batch_code,\n" +
+            "            p.shelf_qnt, \n" +
+            "            p.expired_date, \n" +
+            "            p.manufacture_date \n" +
+            "            from Compartment e\n" +
+            "            inner join product p on e.product_id = p.id\n" +
+            "            where  e.deleted_flag = false and e.tier_id = :tierId", nativeQuery = true)
     List<Object[]> getAllCompartmentByTierId(@Param("tierId") Long tierId);
 
     @Query(value = "select sum(current_quantity) as current_quantity_sum " +

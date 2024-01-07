@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,12 @@ public class CompartmentServiceImpl implements CompartmentService {
             Integer productId = (Integer) row[1];
             String compartmentCode = (String) row[2];
             Integer currentQuantity = (Integer) row[3];
+            String batchCode = (String) row[4];
+            Integer shelfQnt = (Integer) row[5];
+            Date expiredDate = (Date) row[6];
+            Date manufactureDate = (Date) row[7];
             ProductIdCategoryNameDto proNameCateId = null;
+
             String categoryName= null;
             if (productId != null) {
                 proNameCateId = productService.getNameAndCategoryId(Long.valueOf(productId));
@@ -53,6 +59,10 @@ public class CompartmentServiceImpl implements CompartmentService {
                     .currentQuantity(currentQuantity)
                     .productName(proNameCateId == null ? null : proNameCateId.getProductName())
                     .categoryName(categoryName)
+                    .batchCode(batchCode)
+                    .shelfQnt(shelfQnt)
+                    .expiredDate(expiredDate)
+                    .manufactureDate(manufactureDate)
                     .build();
             responses.add(temp);
         }

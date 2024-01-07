@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
                     .shelfQuantity(product.getShelfQuantity())
                     .shelfArrangeQuantity(product.getShelfArrangeQnt())
                     .disableDate(product.getDisableDate())
-                    .expiredDate(null)
+                    .expiredDate(product.getExpiredDate())
                     .isDisabled(false)
                     .manufactureDate(product.getManufactureDate())
                     .deletedFlag(false)

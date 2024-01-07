@@ -56,6 +56,7 @@ public class WarehouseServiceImpl implements WarehouseService {
                 .receivingClerkName(invoice.getReceivingClerkName())
                 .note(invoice.getNote())
                 .supplyCode(invoice.getSupplyCode())
+
                 .deliveryPersonName(invoice.getDeliveryPersonName())
                 .deletedFlag(false)
                 .build();
