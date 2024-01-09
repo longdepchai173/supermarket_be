@@ -72,4 +72,11 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
     }
     @Query(value = "Select shelf_qnt from product where id = :productId",nativeQuery = true)
     Integer getShelfQuantity(@Param("productId") Long productId);
+    @Query(value = "SELECT\n" +
+            "\tSUM(input_quantity - sold_quantity - shelf_qnt) as on_stock,\n" +
+            "\tSUM(sold_quantity) as sold,\n" +
+            "\tSUM(shelf_qnt) as in_shelf\n" +
+            "FROM\n" +
+            "\tproduct", nativeQuery = true)
+    List<Object[]> getDashboard();
 }
