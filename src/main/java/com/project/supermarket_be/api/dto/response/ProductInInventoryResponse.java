@@ -9,6 +9,7 @@ import java.util.Date;
 @Builder
 public class ProductInInventoryResponse {
     Integer productId;
+    Integer productInventoryId;
     String categoryName;
     String productName;
     Integer quantity;

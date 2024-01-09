@@ -56,6 +56,7 @@ public class ProductInventoryServiceImpl implements ProductInventoryService {
                     .status(result[4].toString())
                     .expiredDate((Date) result[5])
                     .productCode(String.valueOf(result[6]))
+                    .productInventoryId((Integer) result[7])
                     .build()).collect(Collectors.toList());
         }
         catch (Exception e){

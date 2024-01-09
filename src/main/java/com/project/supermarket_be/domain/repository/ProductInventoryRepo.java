@@ -23,7 +23,8 @@ public interface ProductInventoryRepo extends JpaRepository<ProductInventory, Lo
             "            pi.quantity, \n" +
             "            pi.status, \n" +
             "            p.expired_date, \n" +
-            "            p.product_code \n" +
+            "            p.product_code, \n" +
+            "            pi.product_inventory_id " +
             "            from product p \n" +
             "            inner join category c on c.category_id = p.category_id \n" +
             "            inner join product_inventory pi on pi.product_id = p.id \n" +
