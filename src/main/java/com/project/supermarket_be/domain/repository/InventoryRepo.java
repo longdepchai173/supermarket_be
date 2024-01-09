@@ -27,4 +27,7 @@ public interface InventoryRepo extends JpaRepository<Inventory, Long> {
             "and i.inventory_time >= TO_TIMESTAMP(:from, 'YYYY-MM-DD HH24:MI:SS')\n" +
             "and i.inventory_time <= TO_TIMESTAMP(:to, 'YYYY-MM-DD HH24:MI:SS')" , nativeQuery = true)
     List<Object[]> getAll(@Param("search") String search, @Param("from") String from, @Param("to") String to);
+
+    @Query(value = "select count(inventory_id) from inventory where deleted_flag = false", nativeQuery = true)
+    long count();
 }

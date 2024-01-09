@@ -33,4 +33,6 @@ public interface ProviderRepo extends JpaRepository<Provider, Long> {
             "ORDER BY\n" +
             "\ttotal DESC;", nativeQuery = true)
     List<Object[]> getDashboard(@Param("month")Integer month, @Param("year") Integer year);
+    @Query(value = "select count(id) from provider where deleted_flag = false", nativeQuery = true)
+    long count();
 }

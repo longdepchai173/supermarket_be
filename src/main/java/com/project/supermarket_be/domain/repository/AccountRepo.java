@@ -19,4 +19,7 @@ public interface AccountRepo extends JpaRepository<Account, Long> {
     List<Account> getAllAccountByCondition(@Param("search") String search, @Param("status") Integer status);
     @Query(value = "select * from Account e where e.deleted_flag = false and e.name like %:search%", nativeQuery = true)
     List<Account> getAllAccountByName(@Param("search") String search);
+
+    @Query(value = "select count(id) from account where deleted_flag = false", nativeQuery = true)
+    long count();
 }

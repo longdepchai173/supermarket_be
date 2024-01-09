@@ -1,10 +1,7 @@
 package com.project.supermarket_be.domain.service.impl;
 
 import com.project.supermarket_be.api.dto.response.*;
-import com.project.supermarket_be.domain.repository.InventoryRepo;
-import com.project.supermarket_be.domain.repository.ProductRepo;
-import com.project.supermarket_be.domain.repository.ProviderRepo;
-import com.project.supermarket_be.domain.repository.WarehouseRepo;
+import com.project.supermarket_be.domain.repository.*;
 import com.project.supermarket_be.domain.service.DashboardService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,12 +18,17 @@ public class DashboardServiceImpl implements DashboardService {
     private final ProductRepo productRepo;
     private final ProviderRepo providerRepo;
     private final WarehouseRepo warehouseRepo;
+    private final AccountRepo accountRepo;
+    private final InventoryRepo inventoryRepo;
     @Override
     public ReturnResponse get(Integer month, Integer year) {
         try{
             List<Object[]> products = productRepo.getDashboard();
             List<Object[]> providers = providerRepo.getDashboard(month, year);
             List<Object[]> warehouses = warehouseRepo.getDashboard(year);
+            Long countProvider = providerRepo.count();
+            Long countAccount = accountRepo.count();
+            Long countInventory = inventoryRepo.count();
 
             List<ProductDashboard> productDashboards = new ArrayList<>();
             if(!products.isEmpty()) {
@@ -66,7 +68,7 @@ public class DashboardServiceImpl implements DashboardService {
                         .build()
                 ).toList();
             }
-            DashboardResponse dashboardResponse = new DashboardResponse(productDashboards, providerDashboards, incomeDashboards);
+            DashboardResponse dashboardResponse = new DashboardResponse(productDashboards, providerDashboards, incomeDashboards,countAccount, countInventory, countProvider );
 
             return ReturnResponse.builder()
                     .statusCode(HttpStatus.OK)
