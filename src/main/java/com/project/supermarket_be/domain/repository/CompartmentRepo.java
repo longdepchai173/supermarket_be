@@ -1,7 +1,9 @@
 package com.project.supermarket_be.domain.repository;
 
 import com.project.supermarket_be.domain.model.Compartment;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -35,4 +37,14 @@ public interface CompartmentRepo extends JpaRepository<Compartment, Long> {
             "where id = :compartmentId and tier_id = :tierId " +
             "and deleted_flag = false", nativeQuery = true)
     List<Object[]> checkCompartment(@Param("tierId") Integer tierId, @Param("compartmentId") Integer compartmentId);
+    @Modifying
+    @Transactional
+    @Query(value = "Update compartment set current_quantity = :shelfArrangeQuantity " +
+            "where id = :compartmentId", nativeQuery = true)
+    void updateQuantity(@Param("compartmentId") Integer compartmentId, @Param("shelfArrangeQuantity") Integer shelfArrangeQuantity);
+    @Modifying
+    @Transactional
+    @Query(value = "Update compartment set product_id = :productId " +
+            "where id = :compartmentId", nativeQuery = true)
+    void updateProductId(@Param("compartmentId") Integer compartmentId,@Param("productId") Integer productId);
 }

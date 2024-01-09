@@ -7,12 +7,14 @@ import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.api.exception.customerException.UserIDNotFoundException;
 import com.project.supermarket_be.api.exception.customerException.UserNotFoundException;
 import com.project.supermarket_be.domain.model.Compartment;
+import com.project.supermarket_be.domain.model.Product;
 import com.project.supermarket_be.domain.model.Tier;
 import com.project.supermarket_be.domain.repository.CompartmentRepo;
 import com.project.supermarket_be.domain.service.CategoryService;
 import com.project.supermarket_be.domain.service.CompartmentService;
 import com.project.supermarket_be.domain.service.ProductService;
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -153,10 +155,15 @@ public class CompartmentServiceImpl implements CompartmentService {
     }
 
     @Override
-    public void updateCurrentQuantities(List<Integer> compartmentIds, Integer shelfArrangeQuantity) {
+    public void updateCurrentQuantities(List<Integer> compartmentIds, Integer shelfArrangeQuantity, Integer productId) {
         for(Integer compartmentId : compartmentIds){
-            Compartment compartment = repo.findById(Long.valueOf(compartmentId)).orElseThrow(()->new UserIDNotFoundException(String.valueOf(compartmentId)));
-            compartment.setCurrentQuantity(shelfArrangeQuantity);
+            try{
+                repo.updateQuantity(compartmentId, shelfArrangeQuantity);
+                repo.updateProductId(compartmentId, productId);
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+
         }
     }
 }

@@ -17,5 +17,5 @@ public interface CompartmentService {
 
     ProductIdCurrentQnt getProductInCompartment(Integer tierId, Integer compartmentId);
 
-    void updateCurrentQuantities(List<Integer> compartmentIds, Integer shelfArrangeQuantity);
+    void updateCurrentQuantities(List<Integer> compartmentIds, Integer shelfArrangeQuantity, Integer productId);
 }

@@ -132,5 +132,8 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-
+    @Override
+    public Product findById(Integer compartmentId) {
+        return repo.findById(Long.valueOf(compartmentId)).orElseThrow(()->new ProductCannotFound(String.valueOf(compartmentId)));
+    }
 }

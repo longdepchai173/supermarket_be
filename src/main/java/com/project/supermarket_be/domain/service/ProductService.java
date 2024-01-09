@@ -20,4 +20,6 @@ public interface ProductService {
     Integer getShelfQuantity(Long productId);
 
     boolean updateShelfQuantity(Integer subQnt, Long productId);
+
+    Product findById(Integer productId);
 }

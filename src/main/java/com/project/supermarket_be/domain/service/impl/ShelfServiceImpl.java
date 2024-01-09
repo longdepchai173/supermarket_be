@@ -131,6 +131,7 @@ public class ShelfServiceImpl implements ShelfService {
 
     @Override
     public ReturnResponse addProduct(AddProductToShelfRequest request) {
+
         Integer sumOfProductOnShelf = getSumOfProductOnShelf(request);
         Product product = productService.getProductById(Long.valueOf(request.getProductId()));
         Integer numberOfProductWantToAdd =
@@ -140,7 +141,7 @@ public class ShelfServiceImpl implements ShelfService {
             Integer updateShelfQnt = product.getShelfQuantity() + numberOfProductWantToAdd;
             product.setShelfQuantity(updateShelfQnt);
             productService.updateShelfQuantity(updateShelfQnt, product.getId());
-            compartmentService.updateCurrentQuantities(request.getCompartmentIds(), product.getShelfArrangeQuantity());
+            compartmentService.updateCurrentQuantities(request.getCompartmentIds(), product.getShelfArrangeQuantity(), request.getProductId());
         }else {
             return ReturnResponse.builder()
                     .statusCode(HttpStatus.BAD_REQUEST)
