@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 public class GetInventoryResponse {
     Date timeInventory;
-    String tnventoryCode;
+    String inventoryCode;
     String signatureOfClerk;
     String nameOfClerk;
     String note;
