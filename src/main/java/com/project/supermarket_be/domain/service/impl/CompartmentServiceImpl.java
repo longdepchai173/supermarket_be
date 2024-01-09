@@ -103,6 +103,7 @@ public class CompartmentServiceImpl implements CompartmentService {
         boolean resultUpdate = productService.updateShelfQuantity(subQnt,productId);
         if(resultUpdate){
             compartment.setCurrentQuantity(0);
+            compartment.setProduct(null);
             repo.save(compartment);
             return ReturnResponse.builder()
                     .statusCode(HttpStatus.OK)
