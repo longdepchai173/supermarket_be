@@ -135,7 +135,7 @@ public class CompartmentServiceImpl implements CompartmentService {
     @Override
     public ProductIdCurrentQnt getProductInCompartment(Integer tierId, Integer compartmentId) {
         ProductIdCurrentQnt toReturn = ProductIdCurrentQnt.builder()
-                .productId(-1)
+                .productId(null)
                 .currentQuantity(0)
                 .build();
         List<Object[]> check = new ArrayList<>();

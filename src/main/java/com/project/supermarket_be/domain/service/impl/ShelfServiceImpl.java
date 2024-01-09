@@ -49,10 +49,10 @@ public class ShelfServiceImpl implements ShelfService {
                             .tierId((Integer) result[0])
                             .count((Long) result[1])
                             .build()
-                    ).collect(Collectors.toList());
-            Integer count = 0;
+                    ).toList();
+            int count = 0;
             for (TierCountInUse inUse : toCalculate) {
-                if (inUse.getCount() != 0 && inUse.getCount() != null) {
+                if (inUse.getCount() != null && inUse.getCount() != 0) {
                     count++;
                 }
             }
@@ -160,7 +160,7 @@ public class ShelfServiceImpl implements ShelfService {
         if (!request.getCompartmentIds().isEmpty())
             for (Integer compartmentId : request.getCompartmentIds()) {
                 ProductIdCurrentQnt productQnt = compartmentService.getProductInCompartment(tierId, compartmentId);
-                if (productQnt.getProductId() == -1 || productQnt.getProductId().equals(productId)) {
+                if (productQnt.getProductId() == null || productQnt.getProductId().equals(productId)) {
                     sumOfProductOnShelf += productQnt.getCurrentQuantity();
                 } else throw new CompartmentHasDiffProduct(String.valueOf(compartmentId), String.valueOf(productId));
 

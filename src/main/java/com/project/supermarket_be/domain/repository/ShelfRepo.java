@@ -25,12 +25,12 @@ public interface ShelfRepo extends JpaRepository<Shelf, Long> {
                                 .build()
                         ).collect(Collectors.toList());
     }
-    @Query(value = "\t\t   select tier.id, count(compartment.id) as count\n" +
-            "\t\t   from tier\n" +
-            "\t\t   left join compartment on compartment.tier_id = tier.id\n" +
-            "\t\t   left join shelf on tier.shelf_id = shelf.id\n" +
-            "\t\t   where shelf.id = :shelfId\n" +
-            "\t\t   group by tier.id", nativeQuery = true)
+    @Query(value = "select tier.id, sum(compartment.current_quantity) as count\n" +
+            " from tier\n" +
+            " left join compartment on compartment.tier_id = tier.id\n" +
+            " left join shelf on tier.shelf_id = shelf.id\n" +
+            " where shelf.id = :shelfId\n" +
+            "group by tier.id", nativeQuery = true)
     List<Object[]> calculateInUse(@Param("shelfId") Integer shelfId);
     @Query(value = "select * from shelf where shelf_code = :shelfCode", nativeQuery = true)
     List<Object[]> findByShelfCode(@Param("shelfCode") String shelfCode);
