@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/dashboard")
 public class DashboardController {
     private final DashboardService service;
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<ReturnResponse> get(@RequestParam(value = "month", defaultValue = "1") Integer month,
                                                  @RequestParam(value = "year", defaultValue = "2023") Integer year){
         ReturnResponse response = service.get(month, year);
