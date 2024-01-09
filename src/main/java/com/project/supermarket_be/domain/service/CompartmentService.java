@@ -15,5 +15,7 @@ public interface CompartmentService {
 
     void createCompartmentList(Tier tier, Integer numberOfCompartment);
 
-    ProductIdCurrentQnt getProductInCompartment(Integer tierId, String compartmentCode);
+    ProductIdCurrentQnt getProductInCompartment(Integer tierId, Integer compartmentId);
+
+    void updateCurrentQuantities(List<Integer> compartmentIds, Integer shelfArrangeQuantity);
 }

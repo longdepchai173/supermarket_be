@@ -13,5 +13,6 @@ public class GetInventoryResponse {
     String tnventoryCode;
     String signatureOfClerk;
     String nameOfClerk;
+    String note;
     List<ProductInInventoryResponse> products;
 }

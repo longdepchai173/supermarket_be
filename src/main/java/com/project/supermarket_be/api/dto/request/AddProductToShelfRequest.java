@@ -9,5 +9,5 @@ import java.util.List;
 public class AddProductToShelfRequest {
     Integer tierId;
     Integer productId;
-    List<String> compartmentCodes;
+    List<Integer> compartmentIds;
 }

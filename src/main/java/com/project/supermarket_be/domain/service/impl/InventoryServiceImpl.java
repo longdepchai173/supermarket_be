@@ -136,6 +136,7 @@ public class InventoryServiceImpl implements InventoryService {
                 .tnventoryCode(inventory.getInventoryCode())
                 .signatureOfClerk(inventory.getStaffSignature())
                 .nameOfClerk(inventory.getCreateByStaff().getName())
+                .note(inventory.getNote())
                 .products(products)
                 .build();
         return ReturnResponse.builder()

@@ -32,7 +32,7 @@ public interface CompartmentRepo extends JpaRepository<Compartment, Long> {
     Integer getCurrentQuantityByShelfId(@Param("shelfId") Long shelfId);
     @Query(value = "select product_id, current_quantity " +
             "from compartment " +
-            "where compartment_code = :compartmentCode and tier_id = :tierId " +
+            "where id = :compartmentId and tier_id = :tierId " +
             "and deleted_flag = false", nativeQuery = true)
-    List<Object[]> checkCompartment(@Param("tierId") Integer tierId, @Param("compartmentCode") String compartmentCode);
+    List<Object[]> checkCompartment(@Param("tierId") Integer tierId, @Param("compartmentId") Integer compartmentId);
 }

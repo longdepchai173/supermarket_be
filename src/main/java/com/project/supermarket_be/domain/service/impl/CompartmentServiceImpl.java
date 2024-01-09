@@ -133,14 +133,14 @@ public class CompartmentServiceImpl implements CompartmentService {
     }
 
     @Override
-    public ProductIdCurrentQnt getProductInCompartment(Integer tierId, String compartmentCode) {
+    public ProductIdCurrentQnt getProductInCompartment(Integer tierId, Integer compartmentId) {
         ProductIdCurrentQnt toReturn = ProductIdCurrentQnt.builder()
                 .productId(-1)
                 .currentQuantity(0)
                 .build();
         List<Object[]> check = new ArrayList<>();
         try{
-            check = repo.checkCompartment(tierId,compartmentCode);
+            check = repo.checkCompartment(tierId,compartmentId);
         }catch (Exception e){
             throw new UserIDNotFoundException(e.getMessage());
         }
@@ -150,5 +150,13 @@ public class CompartmentServiceImpl implements CompartmentService {
             toReturn.setCurrentQuantity((Integer)check.get(0)[1]);
         }
         return toReturn;
+    }
+
+    @Override
+    public void updateCurrentQuantities(List<Integer> compartmentIds, Integer shelfArrangeQuantity) {
+        for(Integer compartmentId : compartmentIds){
+            Compartment compartment = repo.findById(Long.valueOf(compartmentId)).orElseThrow(()->new UserIDNotFoundException(String.valueOf(compartmentId)));
+            compartment.setCurrentQuantity(shelfArrangeQuantity);
+        }
     }
 }

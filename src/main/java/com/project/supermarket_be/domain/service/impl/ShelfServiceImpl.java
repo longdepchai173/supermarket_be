@@ -76,7 +76,7 @@ public class ShelfServiceImpl implements ShelfService {
 
         Category category = categoryService.findById(Long.valueOf(request.getCategoryId()));
         List<Object[]> checkExists = repo.findByShelfCode(request.getShelfCode());
-        if (checkExists.size() != 0) {
+        if (!checkExists.isEmpty()) {
             throw new ShelfCodeAlreadyExists(request.getShelfCode());
         }
 
@@ -134,12 +134,13 @@ public class ShelfServiceImpl implements ShelfService {
         Integer sumOfProductOnShelf = getSumOfProductOnShelf(request);
         Product product = productService.getProductById(Long.valueOf(request.getProductId()));
         Integer numberOfProductWantToAdd =
-                product.getShelfArrangeQuantity() * request.getCompartmentCodes().size() - sumOfProductOnShelf;
+                product.getShelfArrangeQuantity() * request.getCompartmentIds().size() - sumOfProductOnShelf;
         Integer productOnInventory = product.getInputQuantity() - product.getSoldQuantity() - product.getShelfQuantity();
         if(productOnInventory >= numberOfProductWantToAdd){
             Integer updateShelfQnt = product.getShelfQuantity() + numberOfProductWantToAdd;
             product.setShelfQuantity(updateShelfQnt);
             productService.updateShelfQuantity(updateShelfQnt, product.getId());
+            compartmentService.updateCurrentQuantities(request.getCompartmentIds(), product.getShelfArrangeQuantity());
         }else {
             return ReturnResponse.builder()
                     .statusCode(HttpStatus.BAD_REQUEST)
@@ -156,12 +157,12 @@ public class ShelfServiceImpl implements ShelfService {
         Integer productId = request.getProductId();
         Integer tierId = request.getTierId();
         Integer sumOfProductOnShelf = 0;
-        if (!request.getCompartmentCodes().isEmpty())
-            for (String compartmentCode : request.getCompartmentCodes()) {
-                ProductIdCurrentQnt productQnt = compartmentService.getProductInCompartment(tierId, compartmentCode);
-                if (productQnt.getProductId() == -1 || productQnt.getProductId() == productId) {
+        if (!request.getCompartmentIds().isEmpty())
+            for (Integer compartmentId : request.getCompartmentIds()) {
+                ProductIdCurrentQnt productQnt = compartmentService.getProductInCompartment(tierId, compartmentId);
+                if (productQnt.getProductId() == -1 || productQnt.getProductId().equals(productId)) {
                     sumOfProductOnShelf += productQnt.getCurrentQuantity();
-                } else throw new CompartmentHasDiffProduct(compartmentCode, String.valueOf(productId));
+                } else throw new CompartmentHasDiffProduct(String.valueOf(compartmentId), String.valueOf(productId));
 
             }
         return sumOfProductOnShelf;
