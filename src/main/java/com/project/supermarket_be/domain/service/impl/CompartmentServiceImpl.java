@@ -80,7 +80,7 @@ public class CompartmentServiceImpl implements CompartmentService {
         for (Object[] row : compartments) {
             Integer compartmentId = (Integer) row[0];
             Integer current_quantity = (Integer) row[1];
-            if (current_quantity == 0) {
+            if (current_quantity != 0) {
                 count++;
             }
         }

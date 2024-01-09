@@ -34,7 +34,7 @@ public class ShelfController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ReturnResponse> update(@PathVariable("id") Integer shelfId){
+    public ResponseEntity<ReturnResponse> delete(@PathVariable("id") Integer shelfId){
         ReturnResponse response = service.delete(Long.valueOf(shelfId));
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }

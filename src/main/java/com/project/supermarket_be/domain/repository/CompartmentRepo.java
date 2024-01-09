@@ -21,7 +21,7 @@ public interface CompartmentRepo extends JpaRepository<Compartment, Long> {
             "            p.expired_date, \n" +
             "            p.manufacture_date \n" +
             "            from Compartment e\n" +
-            "            inner join product p on e.product_id = p.id\n" +
+            "            left join product p on e.product_id = p.id\n" +
             "            where  e.deleted_flag = false and e.tier_id = :tierId", nativeQuery = true)
     List<Object[]> getAllCompartmentByTierId(@Param("tierId") Long tierId);
 

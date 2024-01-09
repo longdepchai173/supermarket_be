@@ -133,7 +133,7 @@ public class InventoryServiceImpl implements InventoryService {
         List<ProductInInventoryResponse> products = productInventoryService.getProductsById(inventory.getInventoryId());
         GetInventoryResponse response = GetInventoryResponse.builder()
                 .timeInventory(inventory.getInventoryTime())
-                .tnventoryCode(inventory.getInventoryCode())
+                .inventoryCode(inventory.getInventoryCode())
                 .signatureOfClerk(inventory.getStaffSignature())
                 .nameOfClerk(inventory.getCreateByStaff().getName())
                 .note(inventory.getNote())
