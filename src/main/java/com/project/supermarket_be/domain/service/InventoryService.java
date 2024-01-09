@@ -1,6 +1,7 @@
 package com.project.supermarket_be.domain.service;
 
 import com.project.supermarket_be.api.dto.request.CreateInventoryRequest;
+import com.project.supermarket_be.api.dto.request.UpdateInventoryRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 
 public interface InventoryService {
@@ -10,4 +11,6 @@ public interface InventoryService {
     ReturnResponse getById(Integer inventoryId);
 
     ReturnResponse deleteById(Integer inventoryId);
+
+    ReturnResponse update(UpdateInventoryRequest request);
 }

@@ -1,6 +1,8 @@
 package com.project.supermarket_be.api.controller;
 
 import com.project.supermarket_be.api.dto.request.CreateInventoryRequest;
+import com.project.supermarket_be.api.dto.request.UpdateInventoryItem;
+import com.project.supermarket_be.api.dto.request.UpdateInventoryRequest;
 import com.project.supermarket_be.api.dto.response.ReturnResponse;
 import com.project.supermarket_be.domain.service.InventoryService;
 import lombok.AllArgsConstructor;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -36,10 +39,19 @@ public class InventoryController {
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-    @DeleteMapping("delete/{inventoryId}")
+    @DeleteMapping("/delete/{inventoryId}")
     public ResponseEntity<ReturnResponse> deleteById(@PathVariable("inventoryId")Integer inventoryId){
 
         ReturnResponse response = service.deleteById(inventoryId);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ReturnResponse> update(@RequestBody List<UpdateInventoryItem> request){
+        UpdateInventoryRequest request1 = UpdateInventoryRequest.builder()
+                .products(request)
+                .build();
+        ReturnResponse response = service.update(request1);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 

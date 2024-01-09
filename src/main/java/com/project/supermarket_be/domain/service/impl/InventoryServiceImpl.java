@@ -1,9 +1,9 @@
 package com.project.supermarket_be.domain.service.impl;
 
-import com.project.supermarket_be.api.dto.request.CreateInventoryRequest;
-import com.project.supermarket_be.api.dto.request.ProductOnInventoryRequest;
+import com.project.supermarket_be.api.dto.request.*;
 import com.project.supermarket_be.api.dto.response.*;
 import com.project.supermarket_be.api.exception.customerException.CanNotUploadImage;
+import com.project.supermarket_be.api.exception.customerException.ProductCannotFound;
 import com.project.supermarket_be.domain.model.Account;
 import com.project.supermarket_be.domain.model.Inventory;
 import com.project.supermarket_be.domain.model.ProductInventory;
@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -157,6 +158,23 @@ public class InventoryServiceImpl implements InventoryService {
         return ReturnResponse.builder()
                 .statusCode(HttpStatus.OK)
                 .data("Delete inventory with " + inventoryId + " successfully")
+                .build();
+    }
+
+    @Override
+    public ReturnResponse update(UpdateInventoryRequest request) {
+        List<ProductInventory> productInventories = new ArrayList<>();
+        for(UpdateInventoryItem product : request.getProducts()){
+            ProductInventory productInventory = productInventoryRepo.findById(Long.valueOf(product.getProductInventoryId())).orElseThrow(RuntimeException::new);
+            productInventory.setQuantity(product.getQuantity());
+            productInventory.setStatus(product.getStatus());
+            ProductInventory saved = productInventoryRepo.save(productInventory);
+            productInventories.add(saved);
+        }
+
+        return ReturnResponse.builder()
+                .statusCode(HttpStatus.OK)
+                .data(productInventories)
                 .build();
     }
 }
