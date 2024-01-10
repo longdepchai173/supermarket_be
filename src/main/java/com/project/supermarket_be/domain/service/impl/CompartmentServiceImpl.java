@@ -46,6 +46,7 @@ public class CompartmentServiceImpl implements CompartmentService {
             Date expiredDate = (Date) row[6];
             Date manufactureDate = (Date) row[7];
             ProductIdCategoryNameDto proNameCateId = null;
+            String productCode = (String) row[8];
 
             String categoryName= null;
             if (productId != null) {
@@ -65,6 +66,7 @@ public class CompartmentServiceImpl implements CompartmentService {
                     .shelfQnt(shelfQnt)
                     .expiredDate(expiredDate)
                     .manufactureDate(manufactureDate)
+                    .productCode(productCode)
                     .build();
             responses.add(temp);
         }

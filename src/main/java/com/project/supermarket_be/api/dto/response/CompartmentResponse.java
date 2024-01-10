@@ -19,4 +19,5 @@ public class CompartmentResponse {
     private Integer shelfQnt;
     private Date expiredDate;
     private Date manufactureDate;
+    private String productCode;
 }

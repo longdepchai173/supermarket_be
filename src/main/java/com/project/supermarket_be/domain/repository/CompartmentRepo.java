@@ -21,7 +21,8 @@ public interface CompartmentRepo extends JpaRepository<Compartment, Long> {
             "            p.batch_code,\n" +
             "            p.shelf_qnt, \n" +
             "            p.expired_date, \n" +
-            "            p.manufacture_date \n" +
+            "            p.manufacture_date," +
+            "           p.product_code  \n" +
             "            from Compartment e\n" +
             "            left join product p on e.product_id = p.id\n" +
             "            where  e.deleted_flag = false and e.tier_id = :tierId", nativeQuery = true)
